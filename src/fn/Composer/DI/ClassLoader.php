@@ -20,16 +20,16 @@ class ClassLoader extends Autoload\ClassLoader
     private $invoker;
 
     /**
-     * @var ClassLoader
+     * @var Autoload\ClassLoader
      */
     private $classLoader;
 
     /**
-     * @param ClassLoader|null $classLoader
+     * @param Autoload\ClassLoader|null $classLoader
      *
      * @return static
      */
-    public static function instance(ClassLoader $classLoader = null): self
+    public static function instance(Autoload\ClassLoader $classLoader = null): self
     {
         static $instance;
         if (!$instance) {
@@ -39,9 +39,9 @@ class ClassLoader extends Autoload\ClassLoader
     }
 
     /**
-     * @param ClassLoader $proxy
+     * @param Autoload\ClassLoader $proxy
      */
-    private function __construct(ClassLoader $proxy)
+    private function __construct(Autoload\ClassLoader $proxy)
     {
         $this->classLoader = $proxy;
     }
