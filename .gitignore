@@ -1,0 +1,19 @@
+# ignore everything
+/*
+
+# http://php-pds.com/
+
+## dirs
+!/src/
+!/src/*
+!/tests/
+!/tests/*
+
+## files
+!/.editorconfig
+!/.gitattributes
+!/.gitignore
+!/composer*
+!/LICENSE*
+!/phpunit.xml.dist
+!/README*
