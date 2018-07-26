@@ -91,7 +91,7 @@ EOF;
     {
         $definitions = '...[]';
         if (\is_string($di)) {
-            $definitions = var_export(\dirname($vendorDir) . "/$di");
+            $definitions = '\dirname(__DIR__, 7) . ' . var_export("/$di", true);
         }
 
         return <<<EOF
