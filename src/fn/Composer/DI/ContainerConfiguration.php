@@ -61,7 +61,7 @@ class ContainerConfiguration
     /**
      * @return null|ContainerInterface
      */
-    public function getWrapperContainer(): ContainerInterface
+    public function getWrapperContainer()
     {
         return $this->wrapperContainer;
     }
