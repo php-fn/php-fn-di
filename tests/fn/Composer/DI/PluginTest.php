@@ -8,18 +8,29 @@
 
 namespace fn\Composer\DI;
 
-use Composer;
+use fn\test\assert, Composer;
 
 /**
  */
 class PluginTest extends \PHPUnit_Framework_TestCase
 {
+    public static function setUpBeforeClass()
+    {
+        $fs = new Composer\Util\Filesystem;
+        \file_exists($dir = self::target()) && $fs->removeDirectoryPhp($dir);
+        $fs->ensureDirectoryExists($dir);
+    }
+
+    private static function target(string ...$path): string
+    {
+        return \dirname(__DIR__, 4) . '/tmp/' . implode('/', $path);
+    }
+
     public static function providerOnAutoloadDump(): array
     {
         return [
-            'empty'  => ['expected' => '', 'config' => [
-                'extra' => [],
-            ]],
+            'extra-empty'  => ['expected' => Invoker::class, 'config' => ['extra' => []]],
+            'extra-string' => ['expected' => 'di.php', 'config' => ['extra' => ['di' => 'config/di.php']]],
         ];
     }
 
@@ -29,70 +40,33 @@ class PluginTest extends \PHPUnit_Framework_TestCase
      * @covers       Plugin::onAutoloadDump
      *
      * @param mixed $expected
-     * @param array $extra
+     * @param array $config
      */
-    public function testOnAutoloadDump($expected, array $extra)
+    public function testOnAutoloadDump($expected, array $config)
     {
-        $factory = new Composer\Factory;
-
-        $composer = $factory->createComposer(
-            $io = new Composer\IO\NullIO,
-            $jsonFile = $this->config($extra),
-            false,
-            \dirname($jsonFile)
+        (new Composer\Util\Filesystem)->copy(
+            \dirname(__DIR__, 3) . "/fixtures/{$this->dataDescription()}",
+            self::target($this->dataDescription())
         );
+        $cwd = \dirname($this->jsonFile($config));
 
-        $composer->getPluginManager()->addPlugin(new Plugin);
-        $installer = Composer\Installer::create($io, $composer);
-        $installer->run();
+        (new Composer\Util\ProcessExecutor)->execute('composer install -q', $output = '', $cwd);
+        (new Composer\Util\ProcessExecutor)->execute('php test.php', $output, $cwd);
+
+        assert\equals($expected, $output);
     }
 
-    private function config(array $config): string
+    private function jsonFile(array $config): string
     {
         $jsonFile = self::target($this->dataDescription(), 'composer.json');
+
         /** @noinspection PhpUnhandledExceptionInspection */
-        (new Composer\Json\JsonFile($jsonFile))->write(
-            $config + [
-                'repositories' => [
-                    ['type'    => 'package',
-                     'package' => [
-                         'name'    => 'php-fn/di',
-                         'version' => 'dev-master',
-                         'dist'    => ['type' => 'tar', 'url' => self::package()],
-                     ],
-                    ],
-                ],
-                'require'      => [
-                    'php-fn/di' => 'dev-master',
-                ],
-            ]
-        );
+        (new Composer\Json\JsonFile($jsonFile))->write($config + [
+            'config'       => ['cache-dir' => '/dev/null', 'data-dir' => '/dev/null'],
+            'repositories' => [['type' => 'git', 'url' => \dirname(__DIR__, 4)]],
+            'require'      => ['php-fn/di' => 'dev-master'],
+        ]);
 
         return $jsonFile;
-    }
-
-    private static function target(string ...$path): string
-    {
-        return \dirname(__DIR__, 4) . '/tmp/' . implode('/', $path);
-    }
-
-    private static function package(): string
-    {
-        static $package;
-        if ($package) {
-            return $package;
-        }
-
-        $fs = new Composer\Util\Filesystem;
-
-        \file_exists($dir = self::target()) && $fs->removeDirectoryPhp($dir);
-        $fs->ensureDirectoryExists($dir);
-
-        return $package = (new Composer\Package\Archiver\PharArchiver)->archive(
-            \dirname(__DIR__, 4),
-            $dir . '/php-fn-di.tar',
-            'tar',
-            ['.idea', 'composer.lock']
-        );
     }
 }
