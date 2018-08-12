@@ -92,6 +92,7 @@ EOF;
         $definitions = '...[]';
         if (\is_string($di)) {
             $definitions = '\dirname(__DIR__, 7) . ' . var_export("/$di", true);
+            $config      = var_export($config, true);
         }
 
         return <<<EOF
@@ -108,7 +109,7 @@ class Invoker extends \DI\Container
     public function __construct()
     {
          require_once __DIR__ . '/container-classes.php';
-         \$config = ContainerConfigurationFactory::create([], null, $definitions);
+         \$config = ContainerConfigurationFactory::create($config, null, $definitions);
          parent::__construct(
             \$config->getDefinitionSource(), 
             \$config->getProxyFactory(), 
