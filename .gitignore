@@ -8,6 +8,8 @@
 !/src/*
 !/tests/
 !/tests/*
+/src/fn/Composer/DI/Invoker.php
+/src/fn/Composer/DI/container-classes.php
 
 ## files
 !/.editorconfig
