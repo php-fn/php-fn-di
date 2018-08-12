@@ -29,8 +29,17 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     public static function providerOnAutoloadDump(): array
     {
         return [
-            'extra-empty'  => ['expected' => Invoker::class, 'config' => ['extra' => []]],
-            'extra-string' => ['expected' => 'di.php', 'config' => ['extra' => ['di' => 'config/di.php']]],
+            'extra-empty'  => [Invoker::class, ['extra' => []]],
+            'extra-string' => ['di.php', ['extra' => ['di' => 'config/di.php']]],
+            'extra-string-reflection' => [
+                \DI\ContainerBuilder::class,
+                [
+                    'extra' => [
+                        'di'        => 'config/di.php',
+                        'di-config' => ['wiring' => ContainerConfigurationFactory::WIRING_REFLECTION]
+                    ]
+                ]
+            ],
         ];
     }
 
