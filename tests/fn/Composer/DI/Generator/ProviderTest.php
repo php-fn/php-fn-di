@@ -6,13 +6,14 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI;
+namespace fn\Composer\DI\Generator;
 
+use fn\Composer\DI\Invoker;
 use fn\test\assert;
 
 /**
  */
-class ExtraConfigurationTest extends \PHPUnit_Framework_TestCase
+class ProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @return array[]
@@ -112,7 +113,7 @@ class ExtraConfigurationTest extends \PHPUnit_Framework_TestCase
 
     public function testGetIterator(array $expected, array $di, array $config)
     {
-        $actual = \iterator_to_array(new ExtraConfiguration($di, $config), true);
+        $actual = \iterator_to_array(new Provider($di, $config), true);
         assert\equals($expected, $actual);
     }
 }

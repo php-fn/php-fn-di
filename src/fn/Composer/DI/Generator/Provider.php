@@ -6,16 +6,17 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI;
+namespace fn\Composer\DI\Generator;
 
 use ArrayIterator;
+use fn\Composer\DI\Invoker;
 use IteratorAggregate;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 
 /**
  */
-class ExtraConfiguration implements IteratorAggregate
+class Provider implements IteratorAggregate
 {
     /**
      * @var array[]
