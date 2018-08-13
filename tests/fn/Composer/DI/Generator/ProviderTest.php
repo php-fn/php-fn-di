@@ -22,82 +22,62 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'empty' => [
-                'expected' => [
-                    '@' . Invoker::class => [
-                        'config' => [],
-                        'files' => [],
-                        'containers' => [],
-                        'arrays' => [],
-                    ],
-                ],
+                'expected' => [new Renderer(Invoker::class)],
                 'di' => [],
                 'config' => []
             ],
             'complex' => [
                 'expected' => [
-                    '@' . Invoker::class => [
-                        'config' => ['wiring' => 'reflection'],
-                        'files' => [],
-                        'containers' => ['@ns\c1', '@ns\c5'],
-                        'arrays' => ['foo' => 'bar', 'bar' => 'foo', 'baz' => ['foo', 'bar']],
-                    ],
-                    '@ns\c1' => [
-                        'config' => ['cache' => true, 'wiring' => 'reflection'],
-                        'files' => [],
-                        'containers' => ['@ns\c2', '@ns\c3'],
-                        'arrays' => [],
-                    ],
-                    '@ns\c2' => [
-                        'config' => ['wiring' => false],
-                        'files' => ['config/c2.php'],
-                        'containers' => [],
-                        'arrays' => [],
-                    ],
-                    '@ns\c3' => [
-                        'config' => ['wiring' => 'reflection'],
-                        'files' => ['config/c31.php', 'config/c32.php'],
-                        'containers' => ['@ns\c4'],
-                        'arrays' => ['foo' => 'bar', 'bar' => ['foo' => ['a', 'b']]],
-                    ],
-                    '@ns\c4' => [
-                        'config' => ['wiring' => 'reflection'],
-                        'files' => ['config/c4.php'],
-                        'containers' => [],
-                        'arrays' => [],
-                    ],
-                    '@ns\c5' => [
-                        'config' => ['cast-to-array', 'wiring' => 'reflection'],
-                        'files' => ['config/c5.php'],
-                        'containers' => ['@ns\c4'],
-                        'arrays' => [],
-                    ],
+                    new Renderer(
+                        Invoker::class,
+                        ['wiring' => 'reflection'],
+                        ['ns\c1', 'ns\c5'],
+                        [],
+                        ['foo' => 'bar', 'bar' => 'foo', 'baz' => ['foo', 'bar']]
+                    ),
+                    new Renderer('ns\c1', ['cache' => true, 'wiring' => 'reflection'], ['ns\c2', 'ns\c3']),
+                    new Renderer('ns\c2', ['wiring' => false], [], ['config/c2.php']),
+                    new Renderer(
+                        'ns\c3',
+                        ['wiring' => 'reflection'],
+                        ['ns\c4'],
+                        ['config/c31.php', 'config/c32.php'],
+                        ['foo' => 'bar', 'bar' => ['foo' => ['a', 'b']]]
+                    ),
+                    new Renderer('ns\c4', ['wiring' => 'reflection'], [], ['config/c4.php']),
+                    new Renderer(
+                        'ns\c5',
+                        ['cast-to-array', 'wiring' => 'reflection'],
+                        ['ns\c4'],
+                        ['config/c5.php']
+                    )
                 ],
                 'di' => [
                     'foo' => 'bar',
-                    '@ns\\c1' => [
-                        '@ns\\c2' => 'config/c2.php',
-                        '@ns\\c3' => [
+                    '@ns\c1' => [
+                        '@ns\c2' => 'config/c2.php',
+                        '@ns\c3' => [
                             'config/c31.php',
                             'foo' => 'bar',
                             'config/c32.php',
-                            '@ns\\c4' => 'config/c4.php',
+                            '@ns\c4' => 'config/c4.php',
                             'bar' => [
                                 'foo' => ['a', 'b']
                             ],
                         ],
                     ],
                     'bar' => 'foo',
-                    '@ns\\c5' => [
-                        '@ns\\c4',
+                    '@ns\c5' => [
+                        '@ns\c4',
                         'config/c5.php',
                     ],
                     'baz' => ['foo', 'bar'],
                 ],
                 'config' => [
-                    'wiring'  => 'reflection',
-                    '@ns\\c5' => 'cast-to-array',
-                    '@ns\\c1' => ['cache' => true],
-                    '@ns\\c2' => ['wiring' => false],
+                    'wiring' => 'reflection',
+                    '@ns\c5' => 'cast-to-array',
+                    '@ns\c1' => ['cache' => true],
+                    '@ns\c2' => ['wiring' => false],
                 ]
             ],
         ];
@@ -110,10 +90,12 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
      * @param array $di
      * @param array $config
      */
-
     public function testGetIterator(array $expected, array $di, array $config)
     {
-        $actual = \iterator_to_array(new Provider($di, $config), true);
+        $actual = [];
+        foreach (new Provider($di, $config) as $renderer) {
+            $actual[] = $renderer;
+        }
         assert\equals($expected, $actual);
     }
 }

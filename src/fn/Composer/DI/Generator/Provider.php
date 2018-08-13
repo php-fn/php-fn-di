@@ -19,9 +19,9 @@ use RecursiveIteratorIterator;
 class Provider implements IteratorAggregate
 {
     /**
-     * @var array[]
+     * @var Renderer[]|ArrayIterator
      */
-    private $di = [];
+    private $di;
 
     /**
      * @var array
@@ -35,18 +35,29 @@ class Provider implements IteratorAggregate
 
     /**
      * @param array $di
-     * @param array $config
+     * @param array $diConfig
      */
-    public function __construct(array $di, array $config = [])
+    public function __construct(array $di, array $diConfig = [])
     {
-        foreach ($config as $key => $value) {
-            if (static::isClass($key)) {
+        foreach ($diConfig as $key => $value) {
+            if (static::getClass($key)) {
                 $this->containerConfig[$key] = (array)$value;
             } else {
                 $this->defaultConfig[$key] = $value;
             }
         }
-        $this->init($di);
+        $this->di = new ArrayIterator;
+        foreach ($this->init($di) as $class => $config) {
+            $this->di[$class = self::getClass($class)] = new Renderer(
+                $class,
+                $config['config'],
+                array_map(function($container) {
+                    return self::getClass($container);
+                }, $config['containers']),
+                $config['files'],
+                $config['values']
+            );
+        };
     }
 
     /**
@@ -54,13 +65,14 @@ class Provider implements IteratorAggregate
      */
     public function getIterator()
     {
-        return new ArrayIterator($this->di);
+        return $this->di;
     }
 
     /**
      * @param array $di
+     * @return array
      */
-    private function init(array $di)
+    private function init(array $di): array
     {
         $it = new RecursiveIteratorIterator(
             new RecursiveArrayIterator($di),
@@ -68,11 +80,11 @@ class Provider implements IteratorAggregate
         );
 
         $class = '@' . Invoker::class;
-        $this->di = [$class => [
+        $configs = [$class => [
             'config' => $this->config($class),
             'files' => [],
             'containers' => [],
-            'arrays' => [],
+            'values' => [],
         ]];
         $parents = [-1 => $class];
 
@@ -82,27 +94,29 @@ class Provider implements IteratorAggregate
             $parents = \array_slice($parents, 0, $depth + 2, true);
             $parent = $parents[$depth - 1];
 
-            if (static::isClass($key)) {
+            if (static::getClass($key)) {
 
-                $this->di[$key] = $this->di[$key] ?? [
+                $configs[$key] = $configs[$key] ?? [
                     'config' => $this->config($key),
                     'files' => \is_string($value) ? [$value] : [],
                     'containers' => [],
-                    'arrays' => [],
+                    'values' => [],
                 ];
 
-                if (isset($this->di[$parent])) {
-                    $this->di[$parent]['containers'][] = $key;
+                if (isset($configs[$parent])) {
+                    $configs[$parent]['containers'][] = $key;
                 }
 
-            } else if (isset($this->di[$parent])) {
+            } else if (isset($configs[$parent])) {
                 if (\is_numeric($key)) {
-                    $this->di[$parent][self::isClass($value) ? 'containers' : 'files'][] = $value;
+                    $configs[$parent][self::getClass($value) ? 'containers' : 'files'][] = $value;
                 } else {
-                    $this->di[$parent]['arrays'][$key] = $value;
+                    $configs[$parent]['values'][$key] = $value;
                 }
             }
         }
+
+        return $configs;
     }
 
     /**
@@ -117,11 +131,10 @@ class Provider implements IteratorAggregate
 
     /**
      * @param string $candidate
-     *
-     * @return bool
+     * @return string
      */
-    private static function isClass(string $candidate): bool
+    private static function getClass(string $candidate): string
     {
-        return strpos($candidate, '@') === 0;
+        return (string) (strpos($candidate, '@') === 0 ? substr($candidate, 1) : '');
     }
 }
