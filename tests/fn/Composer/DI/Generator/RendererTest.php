@@ -65,7 +65,7 @@ namespace ns1\\ns2 {
         {
             \$rootDir = \dirname(__DIR__, 7) . DIRECTORY_SEPARATOR;
 
-            \$cc = ContainerConfigurationFactory::create(
+            \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
                 ['wiring' => 'reflection', 'cache' => false, 'proxy' => 'proxy.php', 'compile' => '/tmp/'], 
                 null,
                 [
@@ -122,7 +122,7 @@ namespace  {
         {
             \$rootDir = \dirname(__DIR__, 7) . DIRECTORY_SEPARATOR;
 
-            \$cc = ContainerConfigurationFactory::create(
+            \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
                 [], 
                 \$wrapper,
                 [
