@@ -58,6 +58,17 @@ class Renderer
         $this->values = $values;
     }
 
+    public function getNameSpace(): string
+    {
+        return \substr($this->class, 0, -(\strlen($this->getClassName()) + 1));
+    }
+
+    public function getClassName(): string
+    {
+        $parts = \explode('\\', $this->class);
+        return (string) end($parts);
+    }
+
     /**
      * @return string
      */
