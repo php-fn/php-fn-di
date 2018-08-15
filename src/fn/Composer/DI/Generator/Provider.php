@@ -55,9 +55,10 @@ class Provider implements IteratorAggregate
                     return self::getClass($container);
                 }, $config['containers']),
                 $config['files'],
-                $config['values']
+                $config['values'],
+                $config['root']
             );
-        };
+        }
     }
 
     /**
@@ -85,6 +86,7 @@ class Provider implements IteratorAggregate
             'files' => [],
             'containers' => [],
             'values' => [],
+            'root' => true,
         ]];
         $parents = [-1 => $class];
 
@@ -101,6 +103,7 @@ class Provider implements IteratorAggregate
                     'files' => \is_string($value) ? [$value] : [],
                     'containers' => [],
                     'values' => [],
+                    'root' => false,
                 ];
 
                 if (isset($configs[$parent])) {

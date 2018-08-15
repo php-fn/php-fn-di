@@ -18,7 +18,7 @@ class Renderer
     private $class;
 
     /**
-     * @var array
+     * @var ArrayExport
      */
     private $config;
 
@@ -33,9 +33,14 @@ class Renderer
     private $files;
 
     /**
-     * @var array
+     * @var ArrayExport
      */
     private $values;
+
+    /**
+     * @var bool
+     */
+    private $root;
 
     /**
      * @param string $class
@@ -43,19 +48,29 @@ class Renderer
      * @param array $containers
      * @param array $files
      * @param array $values
+     * @param bool $root
      */
     public function __construct(
         string $class,
         array $config = [],
         array $containers = [],
         array $files = [],
-        array $values = []
+        array $values = [],
+        bool $root = false
     ) {
         $this->class = $class;
-        $this->config = $config;
-        $this->containers = $containers;
-        $this->files = $files;
-        $this->values = $values;
+        $this->config = new ArrayExport($config);
+
+        $this->containers = implode('', \array_map(function(string $container): string {
+            return "\n                    \\{$container}::class => new \\{$container}(\$this),";
+        }, $containers));
+
+        $this->files = implode('', \array_map(function(string $file): string {
+            return "\n                \$rootDir . '$file',";
+        }, $files));
+
+        $this->values = new ArrayExport($values);
+        $this->root = $root;
     }
 
     public function getNameSpace(): string
@@ -66,7 +81,8 @@ class Renderer
     public function getClassName(): string
     {
         $parts = \explode('\\', $this->class);
-        return (string) end($parts);
+
+        return (string)end($parts);
     }
 
     /**
@@ -74,6 +90,40 @@ class Renderer
      */
     public function __toString(): string
     {
-        return 'todo';
+        $wrapper = ['\Psr\Container\ContainerInterface $wrapper', '$wrapper'];
+        if ($this->root) {
+            $wrapper = ['', 'null'];
+        }
+
+        return <<<EOF
+namespace {$this->getNameSpace()} {
+    /**
+     */
+    class {$this->getClassName()} extends \DI\Container
+    {
+        /**
+         * @inheritdoc
+         */
+        public function __construct({$wrapper[0]})
+        {
+            \$rootDir = \\dirname(\\__DIR__, 7) . \\DIRECTORY_SEPARATOR;
+
+            \$cc = ContainerConfigurationFactory::create(
+                {$this->config}, 
+                {$wrapper[1]},
+                [{$this->containers}
+                ],{$this->files}
+                {$this->values}
+            );
+
+            parent::__construct(
+                \$cc->getDefinitionSource(),
+                \$cc->getProxyFactory(),
+                \$cc->getWrapperContainer()
+            );        
+        }
+    }
+}
+EOF;
     }
 }

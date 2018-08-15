@@ -22,7 +22,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'empty' => [
-                'expected' => [new Renderer(Invoker::class)],
+                'expected' => [new Renderer(Invoker::class, [], [], [], [], true)],
                 'di' => [],
                 'config' => []
             ],
@@ -33,7 +33,8 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
                         ['wiring' => 'reflection'],
                         ['ns\c1', 'ns\c5'],
                         [],
-                        ['foo' => 'bar', 'bar' => 'foo', 'baz' => ['foo', 'bar']]
+                        ['foo' => 'bar', 'bar' => 'foo', 'baz' => ['foo', 'bar']],
+                        true
                     ),
                     new Renderer('ns\c1', ['cache' => true, 'wiring' => 'reflection'], ['ns\c2', 'ns\c3']),
                     new Renderer('ns\c2', ['wiring' => false], [], ['config/c2.php']),
