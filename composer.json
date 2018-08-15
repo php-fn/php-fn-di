@@ -1,5 +1,6 @@
 {
   "name": "php-fn/di",
+  "description": "composer plugin for dependency injection containers",
   "type": "composer-plugin",
   "license": "MIT",
   "homepage": "https://github.com/php-fn/php-fn-di",
@@ -27,7 +28,5 @@
   },
   "extra": {
     "class": "fn\\Composer\\DI\\Plugin"
-  },
-  "scripts": {
   }
 }
