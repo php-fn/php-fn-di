@@ -106,7 +106,7 @@ namespace {$this->getNameSpace()} {
          */
         public function __construct({$wrapper[0]})
         {
-            \$rootDir = \\dirname(\\__DIR__, 7) . \\DIRECTORY_SEPARATOR;
+            \$rootDir = \\dirname(__DIR__, 7) . DIRECTORY_SEPARATOR;
 
             \$cc = ContainerConfigurationFactory::create(
                 {$this->config}, 
