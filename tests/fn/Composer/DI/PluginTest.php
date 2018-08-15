@@ -40,6 +40,48 @@ class PluginTest extends \PHPUnit_Framework_TestCase
                     ]
                 ]
             ],
+            'extra-array' => [
+                \json_encode([
+                    'invoker-value' => 'foo',
+                    'c2-file' => 'C2',
+                    'c31-file' => 'C31',
+                    'c32-file' => 'C32',
+                    'c3-value' => ['foo' => ['a', 'b']],
+                    'c4-file' => 'C4',
+                    'c5-file' => 'C5',
+                ], JSON_PRETTY_PRINT),
+                [
+                    'extra' => [
+                        'di' => [
+                            'foo' => 'bar',
+                            '@ns\c1' => [
+                                '@ns\c2' => 'config/c2.php',
+                                '@ns\c3' => [
+                                    'config/c31.php',
+                                    'foo' => 'bar',
+                                    'config/c32.php',
+                                    '@ns\c4' => 'config/c4.php',
+                                    'bar' => [
+                                        'foo' => ['a', 'b']
+                                    ],
+                                ],
+                            ],
+                            'bar' => 'foo',
+                            '@ns\c5' => [
+                                '@ns\c4',
+                                'config/c5.php',
+                            ],
+                            'baz' => ['foo', 'bar'],
+                        ],
+                        'di-config' => [
+                            'wiring' => 'reflection',
+                            '@ns\c5' => 'cast-to-array',
+                            '@ns\c1' => ['cache' => true],
+                            '@ns\c2' => ['wiring' => false],
+                        ],
+                    ]
+                ]
+            ],
         ];
     }
 
@@ -60,7 +102,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         $cwd = \dirname($this->jsonFile($config));
 
         (new Composer\Util\ProcessExecutor)->execute('composer install -q', $output = '', $cwd);
-        (new Composer\Util\ProcessExecutor)->execute('php test.php', $output, $cwd);
+        (new Composer\Util\ProcessExecutor)->execute('php -d apc.enable_cli=1 test.php', $output, $cwd);
 
         assert\equals($expected, $output);
     }
