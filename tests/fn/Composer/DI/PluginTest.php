@@ -14,16 +14,17 @@ use fn\test\assert, Composer;
  */
 class PluginTest extends \PHPUnit_Framework_TestCase
 {
+    private static $TARGET;
+
     public static function setUpBeforeClass()
     {
         $fs = new Composer\Util\Filesystem;
-        \file_exists($dir = self::target()) && $fs->removeDirectoryPhp($dir);
-        $fs->ensureDirectoryExists($dir);
+        $fs->ensureDirectoryExists(self::$TARGET = sys_get_temp_dir() . '/php-fn-di-' . md5(microtime()) . '/');
     }
 
     private static function target(string ...$path): string
     {
-        return \dirname(__DIR__, 4) . '/tmp/' . implode('/', $path);
+        return self::$TARGET . implode('/', $path);
     }
 
     public static function providerOnAutoloadDump(): array
