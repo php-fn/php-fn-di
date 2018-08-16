@@ -66,7 +66,7 @@ class Renderer
         }, $containers));
 
         $this->files = implode('', \array_map(function(string $file): string {
-            return "\n                \$rootDir . '$file',";
+            return "\n                BASE_DIR . '$file',";
         }, $files));
 
         $this->values = new ArrayExport($values);
@@ -97,6 +97,9 @@ class Renderer
 
         return <<<EOF
 namespace {$this->getNameSpace()} {
+    use const \\fn\\Composer\\DI\\BASE_DIR as BASE_DIR;
+    use const \\fn\\Composer\\DI\\VENDOR_DIR as VENDOR_DIR;
+
     /**
      */
     class {$this->getClassName()} extends \DI\Container
@@ -106,8 +109,6 @@ namespace {$this->getNameSpace()} {
          */
         public function __construct({$wrapper[0]})
         {
-            \$rootDir = \\dirname(__DIR__, 7) . DIRECTORY_SEPARATOR;
-
             \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
                 {$this->config}, 
                 {$wrapper[1]},

@@ -15,25 +15,26 @@ use Composer\Autoload;
 class ClassLoader extends Autoload\ClassLoader
 {
     /**
-     * @var Invoker
-     */
-    private $invoker;
-
-    /**
      * @var Autoload\ClassLoader
      */
     private $classLoader;
 
     /**
+     * @var string
+     */
+    private $autoloadFile;
+
+    /**
      * @param Autoload\ClassLoader|null $classLoader
+     * @param string $autoloadFile
      *
      * @return static
      */
-    public static function instance(Autoload\ClassLoader $classLoader = null): self
+    public static function instance(Autoload\ClassLoader $classLoader = null, string $autoloadFile = null): self
     {
         static $instance;
         if (!$instance) {
-            $instance = new self($classLoader);
+            $instance = new self($classLoader, $autoloadFile);
         }
         return $instance;
     }
@@ -41,9 +42,10 @@ class ClassLoader extends Autoload\ClassLoader
     /**
      * @param Autoload\ClassLoader $proxy
      */
-    private function __construct(Autoload\ClassLoader $proxy)
+    private function __construct(Autoload\ClassLoader $proxy, string $autoloadFile)
     {
         $this->classLoader = $proxy;
+        $this->autoloadFile = $autoloadFile;
     }
 
     /**
@@ -54,8 +56,10 @@ class ClassLoader extends Autoload\ClassLoader
      */
     public function __invoke(callable $callable, array $params = [])
     {
-        $this->invoker = $this->invoker ?: new Invoker;
-        return $this->invoker->call($callable, $params);
+        require_once $this->autoloadFile;
+        static $invoker;
+        $invoker = $invoker ?: new Invoker;
+        return $invoker->call($callable, $params);
     }
 
     /**

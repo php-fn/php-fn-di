@@ -102,8 +102,9 @@ class PluginTest extends \PHPUnit_Framework_TestCase
         );
         $cwd = \dirname($this->jsonFile($config));
 
-        (new Composer\Util\ProcessExecutor)->execute('composer install -q', $output = '', $cwd);
-        (new Composer\Util\ProcessExecutor)->execute('php -d apc.enable_cli=1 test.php', $output, $cwd);
+        $executor = new Composer\Util\ProcessExecutor;
+        $executor->execute('composer install -q --prefer-dist --no-dev', $output = '', $cwd);
+        $executor->execute('php -d apc.enable_cli=1 test.php', $output, $cwd);
 
         assert\equals($expected, $output);
     }

@@ -54,6 +54,9 @@ class RendererTest extends \PHPUnit_Framework_TestCase
             'root' => [
                 <<<EOF
 namespace ns1\\ns2 {
+    use const \\fn\Composer\\DI\\BASE_DIR as BASE_DIR;
+    use const \\fn\Composer\\DI\\VENDOR_DIR as VENDOR_DIR;
+
     /**
      */
     class c1 extends \\DI\\Container
@@ -63,8 +66,6 @@ namespace ns1\\ns2 {
          */
         public function __construct()
         {
-            \$rootDir = \dirname(__DIR__, 7) . DIRECTORY_SEPARATOR;
-
             \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
                 ['wiring' => 'reflection', 'cache' => false, 'proxy' => 'proxy.php', 'compile' => '/tmp/'], 
                 null,
@@ -74,8 +75,8 @@ namespace ns1\\ns2 {
                     \\ns1\\c3::class => new \\ns1\\c3(\$this),
                     \\c4::class => new \\c4(\$this),
                 ],
-                \$rootDir . 'config/c1.php',
-                \$rootDir . 'config/c2.php',
+                BASE_DIR . 'config/c1.php',
+                BASE_DIR . 'config/c2.php',
                 ['k1' => 'v1', 'k2' => ['v2', 'v3'], 'k3' => ['k4' => ['v5']]]
             );
 
@@ -111,6 +112,9 @@ EOF
             'empty' => [
                 <<<EOF
 namespace  {
+    use const \\fn\Composer\\DI\\BASE_DIR as BASE_DIR;
+    use const \\fn\Composer\\DI\\VENDOR_DIR as VENDOR_DIR;
+
     /**
      */
     class c1 extends \\DI\\Container
@@ -120,8 +124,6 @@ namespace  {
          */
         public function __construct(\\Psr\\Container\\ContainerInterface \$wrapper)
         {
-            \$rootDir = \dirname(__DIR__, 7) . DIRECTORY_SEPARATOR;
-
             \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
                 [], 
                 \$wrapper,
