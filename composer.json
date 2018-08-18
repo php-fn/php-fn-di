@@ -27,6 +27,6 @@
     }
   },
   "extra": {
-    "class": "fn\\Composer\\DI\\Plugin"
+    "class": "fn\\Composer\\DIPlugin"
   }
 }

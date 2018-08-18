@@ -6,13 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI;
+namespace fn\Composer;
 
-use fn\test\assert, Composer;
+use fn;
+use fn\test\assert;
+use Composer;
 
 /**
  */
-class PluginTest extends \PHPUnit_Framework_TestCase
+class DIPluginTest extends \PHPUnit_Framework_TestCase
 {
     private static $TARGET;
 
@@ -30,14 +32,14 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     public static function providerOnAutoloadDump(): array
     {
         return [
-            'extra-empty'  => [Invoker::class, ['extra' => []]],
+            'extra-empty'  => [DI::class, ['extra' => []]],
             'extra-string' => ['di.php', ['extra' => ['di' => 'config/di.php']]],
             'extra-string-reflection' => [
                 \DI\ContainerBuilder::class,
                 [
                     'extra' => [
                         'di'        => 'config/di.php',
-                        'di-config' => ['wiring' => ContainerConfigurationFactory::WIRING_REFLECTION]
+                        'di-config' => ['wiring' => fn\DI\ContainerConfigurationFactory::WIRING_REFLECTION]
                     ]
                 ]
             ],
@@ -89,7 +91,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     /**
      * @dataProvider providerOnAutoloadDump
      *
-     * @covers       Plugin::onAutoloadDump
+     * @covers       DIPlugin::onAutoloadDump
      *
      * @param mixed $expected
      * @param array $config
@@ -97,7 +99,7 @@ class PluginTest extends \PHPUnit_Framework_TestCase
     public function testOnAutoloadDump($expected, array $config)
     {
         (new Composer\Util\Filesystem)->copy(
-            \dirname(__DIR__, 3) . "/fixtures/{$this->dataDescription()}",
+            \dirname(__DIR__, 2) . "/fixtures/{$this->dataDescription()}",
             self::target($this->dataDescription())
         );
         $cwd = \dirname($this->jsonFile($config));
@@ -111,13 +113,20 @@ class PluginTest extends \PHPUnit_Framework_TestCase
 
     private function jsonFile(array $config): string
     {
-        $jsonFile = self::target($this->dataDescription(), 'composer.json');
+        $selfPath = \dirname(__DIR__, 3);
 
+        $jsonFile = self::target($this->dataDescription(), 'composer.json');
         /** @noinspection PhpUnhandledExceptionInspection */
         (new Composer\Json\JsonFile($jsonFile))->write($config + [
+            'require'      => ['php-fn/di' => '999'],
             'config'       => ['cache-dir' => '/dev/null', 'data-dir' => '/dev/null'],
-            'repositories' => [['type' => 'git', 'url' => \dirname(__DIR__, 4)]],
-            'require'      => ['php-fn/di' => 'dev-master'],
+            'repositories' => [[
+                'type' => 'package',
+                'package' => array_merge(
+                    (new Composer\Json\JsonFile($selfPath . '/composer.json'))->read(),
+                    ['version' => '999', 'dist' => ['type' => 'path', 'url' => $selfPath]]
+                ),
+            ]],
         ]);
 
         return $jsonFile;

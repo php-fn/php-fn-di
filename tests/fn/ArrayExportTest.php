@@ -6,8 +6,9 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI\Generator;
+namespace fn;
 
+use fn\ArrayExport;
 use fn\test\assert;
 
 /**

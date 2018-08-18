@@ -6,11 +6,13 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI\Generator;
+namespace fn\Composer;
+
+use fn\ArrayExport;
 
 /**
  */
-class Renderer
+class DIRenderer
 {
     /**
      * @var string
@@ -66,7 +68,7 @@ class Renderer
         }, $containers));
 
         $this->files = implode('', \array_map(function(string $file): string {
-            return "\n                BASE_DIR . '$file',";
+            return "\n                \\fn\\BASE_DIR . '$file',";
         }, $files));
 
         $this->values = new ArrayExport($values);
@@ -97,9 +99,6 @@ class Renderer
 
         return <<<EOF
 namespace {$this->getNameSpace()} {
-    use const \\fn\\Composer\\DI\\BASE_DIR as BASE_DIR;
-    use const \\fn\\Composer\\DI\\VENDOR_DIR as VENDOR_DIR;
-
     /**
      */
     class {$this->getClassName()} extends \DI\Container
@@ -109,7 +108,7 @@ namespace {$this->getNameSpace()} {
          */
         public function __construct({$wrapper[0]})
         {
-            \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
+            \$cc = \\fn\\DI\\ContainerConfigurationFactory::create(
                 {$this->config}, 
                 {$wrapper[1]},
                 [{$this->containers}
@@ -117,11 +116,7 @@ namespace {$this->getNameSpace()} {
                 {$this->values}
             );
 
-            parent::__construct(
-                \$cc->getDefinitionSource(),
-                \$cc->getProxyFactory(),
-                \$cc->getWrapperContainer()
-            );        
+            parent::__construct(\$cc->getDefinitionSource(), \$cc->getProxyFactory(), \$cc->getWrapperContainer());        
         }
     }
 }

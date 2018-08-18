@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI;
+namespace fn\DI;
 
 use DI\ContainerBuilder;
 use Psr\Container\ContainerInterface;

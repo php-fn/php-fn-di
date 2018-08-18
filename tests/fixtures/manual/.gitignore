@@ -9,4 +9,4 @@
 
 ## files
 !/.gitignore
-!/composer.json
+!/composer.*

@@ -6,13 +6,13 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI;
+namespace fn\Composer;
 
 use Composer\Autoload;
 
 /**
  */
-class ClassLoader extends Autoload\ClassLoader
+class DIClassLoader extends Autoload\ClassLoader
 {
     /**
      * @var Autoload\ClassLoader
@@ -57,9 +57,9 @@ class ClassLoader extends Autoload\ClassLoader
     public function __invoke(callable $callable, array $params = [])
     {
         require_once $this->autoloadFile;
-        static $invoker;
-        $invoker = $invoker ?: new Invoker;
-        return $invoker->call($callable, $params);
+        static $di;
+        $di = $di ?: new \fn\Composer\DI;
+        return $di->call($callable, $params);
     }
 
     /**

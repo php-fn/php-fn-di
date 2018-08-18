@@ -2,7 +2,7 @@
 <?php
 
 echo call_user_func(require __DIR__ . '/vendor/autoload.php', function(
-    fn\Composer\DI\Invoker $invoker,
+    fn\Composer\DI $di,
     ns\c1 $c1,
     ns\c2 $c2,
     ns\c3 $c3,
@@ -10,7 +10,7 @@ echo call_user_func(require __DIR__ . '/vendor/autoload.php', function(
     ns\c5 $c5
 ) {
     return \json_encode([
-        'invoker-value' => $invoker->get('bar'),
+        'invoker-value' => $di->get('bar'),
         'c2-file' => $c2->get('c2'),
         'c31-file' => $c3->get('c31'),
         'c32-file' => $c3->get('c32'),

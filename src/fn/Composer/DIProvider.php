@@ -6,20 +6,19 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI\Generator;
+namespace fn\Composer;
 
 use ArrayIterator;
-use fn\Composer\DI\Invoker;
 use IteratorAggregate;
 use RecursiveArrayIterator;
 use RecursiveIteratorIterator;
 
 /**
  */
-class Provider implements IteratorAggregate
+class DIProvider implements IteratorAggregate
 {
     /**
-     * @var Renderer[]|ArrayIterator
+     * @var DIRenderer[]|ArrayIterator
      */
     private $di;
 
@@ -48,7 +47,7 @@ class Provider implements IteratorAggregate
         }
         $this->di = new ArrayIterator;
         foreach ($this->init($di) as $class => $config) {
-            $this->di[$class = self::getClass($class)] = new Renderer(
+            $this->di[$class = self::getClass($class)] = new DIRenderer(
                 $class,
                 $config['config'],
                 array_map(function($container) {
@@ -80,7 +79,7 @@ class Provider implements IteratorAggregate
             RecursiveIteratorIterator::SELF_FIRST
         );
 
-        $class = '@' . Invoker::class;
+        $class = '@fn\\Composer\\DI';
         $configs = [$class => [
             'config' => $this->config($class),
             'files' => [],

@@ -6,14 +6,13 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI\Generator;
+namespace fn\Composer;
 
-use fn\Composer\DI\Invoker;
 use fn\test\assert;
 
 /**
  */
-class ProviderTest extends \PHPUnit_Framework_TestCase
+class DIProviderTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @return array[]
@@ -22,31 +21,31 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     {
         return [
             'empty' => [
-                'expected' => [new Renderer(Invoker::class, [], [], [], [], true)],
+                'expected' => [new DIRenderer(DI::class, [], [], [], [], true)],
                 'di' => [],
                 'config' => []
             ],
             'complex' => [
                 'expected' => [
-                    new Renderer(
-                        Invoker::class,
+                    new DIRenderer(
+                        DI::class,
                         ['wiring' => 'reflection'],
                         ['ns\c1', 'ns\c5'],
                         [],
                         ['foo' => 'bar', 'bar' => 'foo', 'baz' => ['foo', 'bar']],
                         true
                     ),
-                    new Renderer('ns\c1', ['cache' => true, 'wiring' => 'reflection'], ['ns\c2', 'ns\c3']),
-                    new Renderer('ns\c2', ['wiring' => false], [], ['config/c2.php']),
-                    new Renderer(
+                    new DIRenderer('ns\c1', ['cache' => true, 'wiring' => 'reflection'], ['ns\c2', 'ns\c3']),
+                    new DIRenderer('ns\c2', ['wiring' => false], [], ['config/c2.php']),
+                    new DIRenderer(
                         'ns\c3',
                         ['wiring' => 'reflection'],
                         ['ns\c4'],
                         ['config/c31.php', 'config/c32.php'],
                         ['foo' => 'bar', 'bar' => ['foo' => ['a', 'b']]]
                     ),
-                    new Renderer('ns\c4', ['wiring' => 'reflection'], [], ['config/c4.php']),
-                    new Renderer(
+                    new DIRenderer('ns\c4', ['wiring' => 'reflection'], [], ['config/c4.php']),
+                    new DIRenderer(
                         'ns\c5',
                         ['cast-to-array', 'wiring' => 'reflection'],
                         ['ns\c4'],
@@ -94,7 +93,7 @@ class ProviderTest extends \PHPUnit_Framework_TestCase
     public function testGetIterator(array $expected, array $di, array $config)
     {
         $actual = [];
-        foreach (new Provider($di, $config) as $renderer) {
+        foreach (new DIProvider($di, $config) as $renderer) {
             $actual[] = $renderer;
         }
         assert\equals($expected, $actual);

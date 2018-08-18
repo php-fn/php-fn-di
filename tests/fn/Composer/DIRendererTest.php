@@ -6,14 +6,15 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\Composer\DI\Generator;
+namespace fn\Composer;
 
+use fn\Composer\DIRenderer;
 use fn\test\assert;
 
 /**
- * @coversDefaultClass Renderer
+ * @coversDefaultClass DIRenderer
  */
-class RendererTest extends \PHPUnit_Framework_TestCase
+class DIRendererTest extends \PHPUnit_Framework_TestCase
 {
     /**
      * @return array
@@ -29,8 +30,8 @@ class RendererTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers       Renderer::getNameSpace
-     * @covers       Renderer::getClassName
+     * @covers       DIRenderer::getNameSpace
+     * @covers       DIRenderer::getClassName
      *
      * @dataProvider providerClass
      *
@@ -40,7 +41,7 @@ class RendererTest extends \PHPUnit_Framework_TestCase
      */
     public function testClass(string $expectedClassName, string $expectedNameSpace, string $class)
     {
-        $renderer = new Renderer($class);
+        $renderer = new DIRenderer($class);
         assert\same($expectedClassName, $renderer->getClassName());
         assert\same($expectedNameSpace, $renderer->getNameSpace());
     }
@@ -54,9 +55,6 @@ class RendererTest extends \PHPUnit_Framework_TestCase
             'root' => [
                 <<<EOF
 namespace ns1\\ns2 {
-    use const \\fn\Composer\\DI\\BASE_DIR as BASE_DIR;
-    use const \\fn\Composer\\DI\\VENDOR_DIR as VENDOR_DIR;
-
     /**
      */
     class c1 extends \\DI\\Container
@@ -66,7 +64,7 @@ namespace ns1\\ns2 {
          */
         public function __construct()
         {
-            \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
+            \$cc = \\fn\\DI\\ContainerConfigurationFactory::create(
                 ['wiring' => 'reflection', 'cache' => false, 'proxy' => 'proxy.php', 'compile' => '/tmp/'], 
                 null,
                 [
@@ -75,21 +73,17 @@ namespace ns1\\ns2 {
                     \\ns1\\c3::class => new \\ns1\\c3(\$this),
                     \\c4::class => new \\c4(\$this),
                 ],
-                BASE_DIR . 'config/c1.php',
-                BASE_DIR . 'config/c2.php',
+                \\fn\\BASE_DIR . 'config/c1.php',
+                \\fn\\BASE_DIR . 'config/c2.php',
                 ['k1' => 'v1', 'k2' => ['v2', 'v3'], 'k3' => ['k4' => ['v5']]]
             );
 
-            parent::__construct(
-                \$cc->getDefinitionSource(),
-                \$cc->getProxyFactory(),
-                \$cc->getWrapperContainer()
-            );        
+            parent::__construct(\$cc->getDefinitionSource(), \$cc->getProxyFactory(), \$cc->getWrapperContainer());        
         }
     }
 }
 EOF
-, new Renderer('ns1\ns2\c1', [
+, new DIRenderer('ns1\ns2\c1', [
         'wiring' => 'reflection',
         'cache' => false,
         'proxy' => 'proxy.php',
@@ -112,9 +106,6 @@ EOF
             'empty' => [
                 <<<EOF
 namespace  {
-    use const \\fn\Composer\\DI\\BASE_DIR as BASE_DIR;
-    use const \\fn\Composer\\DI\\VENDOR_DIR as VENDOR_DIR;
-
     /**
      */
     class c1 extends \\DI\\Container
@@ -124,7 +115,7 @@ namespace  {
          */
         public function __construct(\\Psr\\Container\\ContainerInterface \$wrapper)
         {
-            \$cc = \\fn\\Composer\\DI\\ContainerConfigurationFactory::create(
+            \$cc = \\fn\\DI\\ContainerConfigurationFactory::create(
                 [], 
                 \$wrapper,
                 [
@@ -132,28 +123,24 @@ namespace  {
                 []
             );
 
-            parent::__construct(
-                \$cc->getDefinitionSource(),
-                \$cc->getProxyFactory(),
-                \$cc->getWrapperContainer()
-            );        
+            parent::__construct(\$cc->getDefinitionSource(), \$cc->getProxyFactory(), \$cc->getWrapperContainer());        
         }
     }
 }
 EOF
-, new Renderer('c1')]
+, new DIRenderer('c1')]
         ];
     }
 
     /**
-     * @covers Renderer::__toString
+     * @covers DIRenderer::__toString
      *
      * @dataProvider providerToString
      *
      * @param string $expected
-     * @param Renderer $renderer
+     * @param DIRenderer $renderer
      */
-    public function testToString(string $expected, Renderer $renderer)
+    public function testToString(string $expected, DIRenderer $renderer)
     {
         assert\same($expected, (string)$renderer);
     }
