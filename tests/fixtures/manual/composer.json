@@ -34,7 +34,13 @@
   },
   "extra": {
     "di": {
-      "0": "config/c1.php",
+      "@fn\\c1": "config/c1.php",
+      "@fn\\c2": {
+        "@fn\\c3": {
+          "c3": "C3",
+          "@fn\\c31": {"c31": "C31"}
+        }
+      },
       "foo": "bar"
     }
   }
