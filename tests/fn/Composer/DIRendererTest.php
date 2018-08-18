@@ -22,8 +22,8 @@ class DIRendererTest extends \PHPUnit_Framework_TestCase
     public function providerClass(): array
     {
         return [
-            'long namespace' => ['cl', 'ns1\ns2', 'ns1\ns2\cl'],
-            'short namespace' => ['cl', 'ns1', 'ns1\cl'],
+            'long namespace' => ['cl', 'ns1\\ns2', 'ns1\\ns2\\cl'],
+            'short namespace' => ['cl', 'ns1', 'ns1\\cl'],
             'no namespace' => ['cl', '', 'cl'],
             'empty' => ['', '', ''],
         ];
@@ -52,12 +52,12 @@ class DIRendererTest extends \PHPUnit_Framework_TestCase
     public function providerToString(): array
     {
         return [
-            'root' => [
+            'nested' => [
                 <<<EOF
 namespace ns1\\ns2 {
     /**
      */
-    class c1 extends \\DI\\Container
+    class c1 extends \\fn\\DI\\Container
     {
         /**
          * @inheritdoc
@@ -66,16 +66,18 @@ namespace ns1\\ns2 {
         {
             \$cc = \\fn\\DI\\ContainerConfigurationFactory::create(
                 ['wiring' => 'reflection', 'cache' => false, 'proxy' => 'proxy.php', 'compile' => '/tmp/'], 
-                null,
-                [
-                    \\ns1\\ns2\\ns3\\c2::class => new \\ns1\\ns2\\ns3\\c2(\$this),
-                    \\ns1\\ns2\\c3::class => new \\ns1\\ns2\\c3(\$this),
-                    \\ns1\\c3::class => new \\ns1\\c3(\$this),
-                    \\c4::class => new \\c4(\$this),
+                \$sources = [
+                    \\ns1\\ns2\\ns3\\c2::class => new \\ns1\\ns2\\ns3\\c2,
+                    \\ns1\\ns2\\c3::class => new \\ns1\\ns2\\c3,
+                    \\ns1\\c3::class => new \\ns1\\c3,
+                    \\c4::class => new \\c4,
                 ],
-                \\fn\\BASE_DIR . 'config/c1.php',
-                \\fn\\BASE_DIR . 'config/c2.php',
-                ['k1' => 'v1', 'k2' => ['v2', 'v3'], 'k3' => ['k4' => ['v5']]]
+                ...\array_values(\$sources),
+                ...[
+                    \\fn\\BASE_DIR . 'config/c1.php',
+                    \\fn\\BASE_DIR . 'config/c2.php',
+                ],
+                ...[['k1' => 'v1', 'k2' => ['v2', 'v3'], 'k3' => ['k4' => ['v5']]]]
             );
 
             parent::__construct(\$cc->getDefinitionSource(), \$cc->getProxyFactory(), \$cc->getWrapperContainer());        
@@ -83,7 +85,7 @@ namespace ns1\\ns2 {
     }
 }
 EOF
-, new DIRenderer('ns1\ns2\c1', [
+, new DIRenderer('ns1\\ns2\\c1', [
         'wiring' => 'reflection',
         'cache' => false,
         'proxy' => 'proxy.php',
@@ -100,7 +102,7 @@ EOF
         'k1' => 'v1',
         'k2' => ['v2', 'v3'],
         'k3' => ['k4' => ['v5']],
-    ], true),
+    ]),
 ],
 
             'empty' => [
@@ -108,19 +110,21 @@ EOF
 namespace  {
     /**
      */
-    class c1 extends \\DI\\Container
+    class c1 extends \\fn\\DI\\Container
     {
         /**
          * @inheritdoc
          */
-        public function __construct(\\Psr\\Container\\ContainerInterface \$wrapper)
+        public function __construct()
         {
             \$cc = \\fn\\DI\\ContainerConfigurationFactory::create(
                 [], 
-                \$wrapper,
-                [
+                \$sources = [
                 ],
-                []
+                ...\\array_values(\$sources),
+                ...[
+                ],
+                ...[[]]
             );
 
             parent::__construct(\$cc->getDefinitionSource(), \$cc->getProxyFactory(), \$cc->getWrapperContainer());        

@@ -30,28 +30,30 @@ class ContainerConfigurationFactory
     private $container;
 
     /**
-     * @param array                   $config
-     * @param ContainerInterface|null $container
+     * @param array $config
      */
-    public function __construct(array $config, ContainerInterface $container = null)
+    public function __construct(array $config)
     {
-        $this->config    = $config;
+        $this->config = $config;
+    }
+
+    public function useContainer(ContainerInterface $container): self
+    {
         $this->container = $container;
+        return $this;
     }
 
     /**
-     * @param array                   $config
-     * @param ContainerInterface|null $container
-     * @param mixed                   ...$definitions
+     * @param array $config
+     * @param mixed ...$definitions
      *
      * @return ContainerConfiguration
      */
     public static function create(
         array $config,
-        ContainerInterface $container = null,
         ...$definitions
     ): ContainerConfiguration {
-        return (new static($config, $container))->configure(...$definitions);
+        return (new static($config))->configure(...$definitions);
     }
 
     /** @noinspection PhpDocMissingThrowsInspection */
