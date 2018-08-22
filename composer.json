@@ -8,13 +8,14 @@
   "prefer-stable": true,
   "require": {
     "php": ">=7.0",
-    "php-di/php-di": "^6.0",
-    "composer-plugin-api": "^1.0"
+    "php-fn/php-fn": "^1",
+    "php-di/php-di": "^6",
+    "composer-plugin-api": "^1"
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
-    "php-fn/test": "^1.0",
-    "composer/composer": "^1.0"
+    "php-fn/test": "^1",
+    "composer/composer": "^1"
   },
   "autoload": {
     "psr-4": {

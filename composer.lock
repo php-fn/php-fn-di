@@ -4,7 +4,7 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#installing-dependencies",
         "This file is @generated automatically"
     ],
-    "content-hash": "ff6e8b9f84050ad3d241b62d3a8b9851",
+    "content-hash": "43b64e436e5e15d9dd41b609679faa60",
     "packages": [
         {
             "name": "jeremeamia/SuperClosure",
@@ -257,6 +257,49 @@
                 "reflection"
             ],
             "time": "2018-02-18T17:39:01+00:00"
+        },
+        {
+            "name": "php-fn/php-fn",
+            "version": "v1.0.180816",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/php-fn/php-fn.git",
+                "reference": "446e297413aa76bda336898705f372678f3c5840"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/php-fn/php-fn/zipball/446e297413aa76bda336898705f372678f3c5840",
+                "reference": "446e297413aa76bda336898705f372678f3c5840",
+                "shasum": ""
+            },
+            "require": {
+                "php": ">=5.6"
+            },
+            "require-dev": {
+                "php-fn/test": "^1.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "fn\\": [
+                        "src/fn"
+                    ]
+                },
+                "files": [
+                    "src/autoload-files.php"
+                ]
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "description": "a php library",
+            "homepage": "https://github.com/php-fn/php-fn",
+            "keywords": [
+                "library",
+                "php"
+            ],
+            "time": "2018-08-17T08:47:24+00:00"
         },
         {
             "name": "psr/container",
