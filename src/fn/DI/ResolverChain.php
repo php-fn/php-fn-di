@@ -62,20 +62,24 @@ class ResolverChain extends ParameterResolver\ResolverChain implements InvokerIn
     }
 
     /**
-     * @param callable $callable
-     * @param array    $provided
+     * @param callable $candidate
+     *
+     * @return ReflectionFunctionAbstract
+     */
+    public function reflect($candidate): ReflectionFunctionAbstract
+    {
+        return CallableReflection::create($this->resolve($candidate));
+    }
+
+    /**
+     * @param callable $candidate
+     * @param array $provided
      *
      * @return array
      */
-    public function resolve($callable, array $provided = []): array
+    public function parameters($candidate, array $provided = []): array
     {
-        if ($resolver = $this->invoker->getCallableResolver()) {
-            /** @noinspection PhpUnhandledExceptionInspection */
-            $callable = $resolver->resolve($callable);
-        }
-
-        /** @noinspection PhpUnhandledExceptionInspection */
-        return $this->getParameters(CallableReflection::create($callable), $provided, []);
+        return $this->getParameters($this->reflect($candidate), $provided, []);
     }
 
     /**
