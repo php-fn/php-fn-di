@@ -6,6 +6,8 @@
  * file that was distributed with this source code.
  */
 
+/** @noinspection PhpDocMissingThrowsInspection */
+
 namespace fn\DI;
 
 use fn;
@@ -14,6 +16,7 @@ use Invoker\InvokerInterface;
 use Invoker\ParameterResolver;
 use Invoker\Reflection\CallableReflection;
 use Psr\Container\ContainerInterface;
+use ReflectionFunctionAbstract;
 
 /**
  */
@@ -43,7 +46,21 @@ class ResolverChain extends ParameterResolver\ResolverChain implements InvokerIn
         }));
     }
 
-    /** @noinspection PhpDocMissingThrowsInspection */
+    /**
+     * @param callable $candidate
+     *
+     * @return callable
+     */
+    public function resolve($candidate)
+    {
+        if ($resolver = $this->invoker->getCallableResolver()) {
+            /** @noinspection PhpUnhandledExceptionInspection */
+            return $resolver->resolve($candidate);
+        }
+        fn\isCallable($candidate, true) || fn\fail('argument $candidate is not callable');
+        return $candidate;
+    }
+
     /**
      * @param callable $callable
      * @param array    $provided
