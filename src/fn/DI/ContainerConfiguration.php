@@ -69,10 +69,14 @@ class ContainerConfiguration
     /**
      * @param string $containerClass
      *
-     * @return \DI\Container
+     * @return Container
      */
-    public function createContainer(string $containerClass): \DI\Container
+    public function container(string $containerClass = Container::class)
     {
-        return new $containerClass($this->getDefinitionSource(), $this->getProxyFactory(), $this->getProxyFactory());
+        return new $containerClass(
+            $this->getDefinitionSource(),
+            $this->getProxyFactory(),
+            $this->getWrapperContainer()
+        );
     }
 }
