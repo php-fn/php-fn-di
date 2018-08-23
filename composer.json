@@ -20,7 +20,10 @@
   "autoload": {
     "psr-4": {
       "fn\\": ["src/fn"]
-    }
+    },
+    "files": [
+      "src/autoload-files.php"
+    ]
   },
   "autoload-dev": {
     "psr-4": {

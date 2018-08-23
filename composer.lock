@@ -260,16 +260,16 @@
         },
         {
             "name": "php-fn/php-fn",
-            "version": "v1.0.180816",
+            "version": "v1.1.180823",
             "source": {
                 "type": "git",
                 "url": "https://github.com/php-fn/php-fn.git",
-                "reference": "446e297413aa76bda336898705f372678f3c5840"
+                "reference": "fadf3fdcb55f6debc25de59140dfc897098d71ad"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/php-fn/php-fn/zipball/446e297413aa76bda336898705f372678f3c5840",
-                "reference": "446e297413aa76bda336898705f372678f3c5840",
+                "url": "https://api.github.com/repos/php-fn/php-fn/zipball/fadf3fdcb55f6debc25de59140dfc897098d71ad",
+                "reference": "fadf3fdcb55f6debc25de59140dfc897098d71ad",
                 "shasum": ""
             },
             "require": {
@@ -299,7 +299,7 @@
                 "library",
                 "php"
             ],
-            "time": "2018-08-17T08:47:24+00:00"
+            "time": "2018-08-23T22:02:15+00:00"
         },
         {
             "name": "psr/container",
@@ -721,16 +721,16 @@
         },
         {
             "name": "composer/xdebug-handler",
-            "version": "1.2.0",
+            "version": "1.2.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/composer/xdebug-handler.git",
-                "reference": "e1809da56ce1bd1b547a752936817341ac244d8e"
+                "reference": "e37cbd80da64afe314c72de8d2d2fec0e40d9373"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/e1809da56ce1bd1b547a752936817341ac244d8e",
-                "reference": "e1809da56ce1bd1b547a752936817341ac244d8e",
+                "url": "https://api.github.com/repos/composer/xdebug-handler/zipball/e37cbd80da64afe314c72de8d2d2fec0e40d9373",
+                "reference": "e37cbd80da64afe314c72de8d2d2fec0e40d9373",
                 "shasum": ""
             },
             "require": {
@@ -761,7 +761,7 @@
                 "Xdebug",
                 "performance"
             ],
-            "time": "2018-08-16T10:54:23+00:00"
+            "time": "2018-08-23T12:00:19+00:00"
         },
         {
             "name": "doctrine/instantiator",
