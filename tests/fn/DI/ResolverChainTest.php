@@ -48,9 +48,9 @@ class ResolverChainTest extends \PHPUnit_Framework_TestCase
     {
         $resolver = new ResolverChain(
             fn\di([\PHPUnit_Framework_TestCase::class => $this, static::class => $this]),
-            function(array $provided, array $resolved, \ReflectionParameter ...$parameters) {
+            function(array $provided, \ReflectionParameter ...$parameters) {
                 $map = fn\map(array_change_key_case($provided));
-                return $resolved + fn\traverse($parameters, function(\ReflectionParameter $parameter, &$key) use($map) {
+                return fn\traverse($parameters, function(\ReflectionParameter $parameter, &$key) use($map) {
                     $key = $parameter->getPosition();
                     return $map->get(strtolower($parameter->getName()), null);
                 });

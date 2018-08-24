@@ -22,7 +22,7 @@ class ResolverCallback implements ParameterResolver
     private $callback;
 
     /**
-     * @param callable $callback
+     * @param callable $callback function(array $provided, \ReflectionParameter ...$parameters): array
      */
     public function __construct(callable $callback)
     {
@@ -42,6 +42,6 @@ class ResolverCallback implements ParameterResolver
         if (!empty($resolvedParameters)) {
             $parameters = array_diff_key($parameters, $resolvedParameters);
         }
-        return \call_user_func($this->callback, $providedParameters, $resolvedParameters, ...$parameters);
+        return $resolvedParameters + \call_user_func($this->callback, $providedParameters, ...$parameters);
     }
 }

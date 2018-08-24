@@ -18,9 +18,17 @@ class ResolverCallbackTest extends \PHPUnit_Framework_TestCase
     public function providerGetParameters(): array
     {
         return [
-            'empty' => [[[], []], function() {}],
-            'arguments' => [[['a1', 'a2', 'a3'], ['provided']], function($a1, $a2, array ...$a3) {}, ['provided']],
-            'resolved' => [[['a1', 'a3'], []], function($a1, $a2, $a3) {}, [], [1 => null]],
+            'empty' => [[], function() {}],
+            'no match' => [[], function() {}, ['a1' => 'A1']],
+            'partial' => [
+                [1 => 'A2', 2 => [[]]],
+                function($a1, $a2, array ...$a3) {}, ['a3' => [[]], 'a2' => 'A2']
+            ],
+            'resolved' => [
+                [2 => 'resolved', 1 => 'A2'],
+                function($a1, $a2, $a3) {}, ['a3' => 'A3', 'a2' => 'A2'],
+                [2 => 'resolved']
+            ],
         ];
     }
 
@@ -34,13 +42,12 @@ class ResolverCallbackTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParameters(array $expected, callable $callable, array $provided = [], array $resolved = [])
     {
-        $resolver = new ResolverCallback(function(array $provided, array $resolved, ReflectionParameter ...$parameters) {
-            return [
-                fn\traverse($parameters, function(ReflectionParameter $parameter) {
-                    return $parameter->getName();
-                }),
-                $provided
-            ];
+        $resolver = new ResolverCallback(function(array $provided, ReflectionParameter ...$parameters) {
+            $map = fn\map($provided);
+            return fn\traverse($parameters, function(ReflectionParameter $parameter, &$key) use($map) {
+                $key = $parameter->getPosition();
+                return $map->get($parameter->getName(), null);
+            });
         });
         assert\same($expected, $resolver->getParameters(CallableReflection::create($callable), $provided, $resolved));
     }
