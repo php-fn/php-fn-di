@@ -11,6 +11,7 @@ namespace fn\DI;
 use function DI\value;
 use fn;
 use fn\test\assert;
+use Invoker\ParameterResolver\DefaultValueResolver;
 
 class ResolverChainTest extends \PHPUnit_Framework_TestCase
 {
@@ -28,5 +29,46 @@ class ResolverChainTest extends \PHPUnit_Framework_TestCase
 
         $resolver = new ResolverChain(fn\di(['callback' => value($func)]));
         assert\same($func, $resolver->resolve('callback'));
+    }
+
+    /**
+     * @covers ResolverChain::reflect
+     */
+    public function testReflect()
+    {
+        $resolver = new ResolverChain(fn\di(['callback' => value(function(string $s1){})]));
+        assert\type(\ReflectionFunction::class, $resolver->reflect('callback'));
+        assert\type(\ReflectionMethod::class, $resolver->reflect([$this, __FUNCTION__]));
+    }
+
+    /**
+     * @covers ResolverChain::parameters
+     */
+    public function testParameters()
+    {
+        $resolver = new ResolverChain(
+            fn\di([\PHPUnit_Framework_TestCase::class => $this, static::class => $this]),
+            function(array $provided, array $resolved, \ReflectionParameter ...$parameters) {
+                $map = fn\map(array_change_key_case($provided));
+                return $resolved + fn\traverse($parameters, function(\ReflectionParameter $parameter, &$key) use($map) {
+                    $key = $parameter->getPosition();
+                    return $map->get(strtolower($parameter->getName()), null);
+                });
+            },
+            new DefaultValueResolver
+        );
+
+        $callback = function(
+            string $p1,
+            self $p2,
+            bool $p3 = false,
+            \PHPUnit_Framework_TestCase $p4 = null
+        ) {};
+
+        assert\equals([1 => $this, 3 => $this, 2 => false], $resolver->parameters($callback));
+        assert\equals(
+            [1 => $this, 3 => $this, 2 => true, 0 => false],
+            $resolver->parameters($callback, ['P3' => true, 'p1' => false])
+        );
     }
 }
