@@ -13,26 +13,26 @@ use fn;
 use fn\test\assert;
 use Invoker\ParameterResolver\DefaultValueResolver;
 
-class ResolverChainTest extends \PHPUnit_Framework_TestCase
+class InvokerTest extends \PHPUnit_Framework_TestCase
 {
     /**
-     * @covers ResolverChain::resolve
+     * @covers Invoker::resolve
      */
     public function testResolve()
     {
         assert\exception('argument $candidate is not callable', function() {
-            (new ResolverChain)->resolve('count');
+            (new Invoker)->resolve('count');
         });
 
-        assert\same($func = function() {}, (new ResolverChain)->resolve($func));
-        assert\same([$this, __FUNCTION__], (new ResolverChain)->resolve([$this, __FUNCTION__]));
+        assert\same($func = function() {}, (new Invoker)->resolve($func));
+        assert\same([$this, __FUNCTION__], (new Invoker)->resolve([$this, __FUNCTION__]));
 
-        $resolver = new ResolverChain(fn\di(['callback' => value($func)]));
+        $resolver = new Invoker(fn\di(['callback' => value($func)]));
         assert\same($func, $resolver->resolve('callback'));
     }
 
     /**
-     * @covers ResolverChain::reflect
+     * @covers Invoker::reflect
      */
     public function testReflect()
     {
@@ -42,7 +42,7 @@ class ResolverChainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ResolverChain::parameters
+     * @covers Invoker::parameters
      */
     public function testParameters()
     {
@@ -62,7 +62,7 @@ class ResolverChainTest extends \PHPUnit_Framework_TestCase
     }
 
     /**
-     * @covers ResolverChain::call
+     * @covers Invoker::call
      */
     public function testCall()
     {
@@ -77,9 +77,9 @@ class ResolverChainTest extends \PHPUnit_Framework_TestCase
         );
     }
 
-    private function resolver(array $definition = []): ResolverChain
+    private function resolver(array $definition = []): Invoker
     {
-        return new ResolverChain(
+        return new Invoker(
             fn\di($definition),
             function(array $provided, \ReflectionParameter ...$parameters) {
                 $map = fn\map(array_change_key_case($provided));

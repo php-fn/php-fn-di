@@ -6,7 +6,7 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\DI;
+namespace fn\DI\ParameterResolver;
 
 use fn;
 use Invoker\ParameterResolver\ParameterResolver;
@@ -14,7 +14,7 @@ use ReflectionFunctionAbstract;
 
 /**
  */
-class ResolverCallback implements ParameterResolver
+class Callback implements ParameterResolver
 {
     /**
      * @var callable

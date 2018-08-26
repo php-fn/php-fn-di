@@ -6,14 +6,14 @@
  * file that was distributed with this source code.
  */
 
-namespace fn\DI;
+namespace fn\DI\ParameterResolver;
 
 use Invoker\Reflection\CallableReflection;
 use ReflectionParameter;
 use fn;
 use fn\test\assert;
 
-class ResolverCallbackTest extends \PHPUnit_Framework_TestCase
+class CallbackTest extends \PHPUnit_Framework_TestCase
 {
     public function providerGetParameters(): array
     {
@@ -34,7 +34,7 @@ class ResolverCallbackTest extends \PHPUnit_Framework_TestCase
 
     /**
      * @dataProvider providerGetParameters
-     * @covers       ResolverCallback::getParameters
+     * @covers       Callback::getParameters
      * @param array $expected
      * @param callable $callable
      * @param array $provided
@@ -42,7 +42,7 @@ class ResolverCallbackTest extends \PHPUnit_Framework_TestCase
      */
     public function testGetParameters(array $expected, callable $callable, array $provided = [], array $resolved = [])
     {
-        $resolver = new ResolverCallback(function(array $provided, ReflectionParameter ...$parameters) {
+        $resolver = new Callback(function(array $provided, ReflectionParameter ...$parameters) {
             $map = fn\map($provided);
             return fn\traverse($parameters, function(ReflectionParameter $parameter, &$key) use($map) {
                 $key = $parameter->getPosition();

@@ -11,19 +11,22 @@
 namespace fn\DI;
 
 use fn;
-use Invoker\Invoker;
-use Invoker\InvokerInterface;
-use Invoker\ParameterResolver;
-use Invoker\Reflection\CallableReflection;
+use fn\DI\ParameterResolver\Callback;
+
+use Invoker\{
+    InvokerInterface,
+    ParameterResolver,
+    Reflection\CallableReflection
+};
 use Psr\Container\ContainerInterface;
 use ReflectionFunctionAbstract;
 
 /**
  */
-class ResolverChain extends ParameterResolver\ResolverChain implements InvokerInterface
+class Invoker extends ParameterResolver\ResolverChain implements InvokerInterface
 {
     /**
-     * @var Invoker
+     * @var \Invoker\Invoker
      */
     private $invoker;
 
@@ -32,17 +35,17 @@ class ResolverChain extends ParameterResolver\ResolverChain implements InvokerIn
      */
     public function __construct(...$resolvers)
     {
-        $this->invoker = new Invoker($this);
+        $this->invoker = new \Invoker\Invoker($this);
 
         parent::__construct(fn\traverse($resolvers, function($candidate): ParameterResolver\ParameterResolver {
             if ($candidate instanceof ParameterResolver\ParameterResolver) {
                 return $candidate;
             }
             if ($candidate instanceof ContainerInterface) {
-                $this->invoker = new Invoker($this, $candidate);
+                $this->invoker = new \Invoker\Invoker($this, $candidate);
                 return new ParameterResolver\Container\TypeHintContainerResolver($candidate);
             }
-            return new ResolverCallback($candidate);
+            return new Callback($candidate);
         }));
     }
 
