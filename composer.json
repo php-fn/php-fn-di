@@ -4,11 +4,11 @@
   "type": "composer-plugin",
   "license": "MIT",
   "homepage": "https://github.com/php-fn/php-fn-di",
-  "authors": [{"name": "Demjan Kaluzki"}],
   "prefer-stable": true,
   "require": {
     "php": ">=7.0",
     "php-fn/php-fn": "^1",
+    "php-fn/invoker": "^2",
     "php-di/php-di": "^6",
     "composer-plugin-api": "^1"
   },

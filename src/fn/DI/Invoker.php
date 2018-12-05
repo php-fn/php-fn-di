@@ -11,13 +11,8 @@
 namespace fn\DI;
 
 use fn;
-use fn\DI\ParameterResolver\Callback;
 
-use Invoker\{
-    InvokerInterface,
-    ParameterResolver,
-    Reflection\CallableReflection
-};
+use Invoker\{InvokerInterface, ParameterResolver, ParameterResolver\GeneratorResolver, Reflection\CallableReflection};
 use Psr\Container\ContainerInterface;
 use ReflectionFunctionAbstract;
 
@@ -45,7 +40,7 @@ class Invoker extends ParameterResolver\ResolverChain implements InvokerInterfac
                 $this->invoker = new \Invoker\Invoker($this, $candidate);
                 return new ParameterResolver\Container\TypeHintContainerResolver($candidate);
             }
-            return new Callback($candidate);
+            return new GeneratorResolver($candidate);
         }));
     }
 

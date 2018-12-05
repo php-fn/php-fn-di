@@ -81,12 +81,11 @@ class InvokerTest extends \PHPUnit_Framework_TestCase
     {
         return new Invoker(
             fn\di($definition),
-            function(array $provided, \ReflectionParameter ...$parameters) {
+            function(\ReflectionParameter $parameter, array $provided) {
                 $map = fn\map(array_change_key_case($provided));
-                return fn\traverse($parameters, function(\ReflectionParameter $parameter, &$key) use($map) {
-                    $key = $parameter->getPosition();
-                    return $map->get(strtolower($parameter->getName()), null);
-                });
+                if (($value = $map->get(strtolower($parameter->getName()), null)) !== null) {
+                    yield $value;
+                }
             },
             new DefaultValueResolver
         );
