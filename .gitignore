@@ -13,7 +13,7 @@
 !/.editorconfig
 !/.gitattributes
 !/.gitignore
-!/composer*
+!/composer.json
 !/LICENSE*
 !/phpunit.xml.dist
 !/README*
