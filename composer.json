@@ -14,6 +14,7 @@
   },
   "require-dev": {
     "roave/security-advisories": "dev-master",
+    "docker-xampp/bin": "^1",
     "php-fn/test": "^1",
     "composer/composer": "^1"
   },
