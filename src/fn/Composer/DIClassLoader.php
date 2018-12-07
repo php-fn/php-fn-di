@@ -54,11 +54,12 @@ class DIClassLoader extends Autoload\ClassLoader
      *
      * @return mixed
      */
-    public function __invoke(callable $callable, array $params = [])
+    public function __invoke($callable, array $params = [])
     {
         require_once $this->autoloadFile;
         static $di;
-        $di = $di ?: new \fn\Composer\DI;
+        /** @var \fn\DI\Container $di */
+        $di = $di ?: new DI;
         return $di->call($callable, $params);
     }
 
