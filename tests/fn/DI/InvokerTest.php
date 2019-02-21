@@ -27,7 +27,7 @@ class InvokerTest extends \PHPUnit_Framework_TestCase
         assert\same($func = function() {}, (new Invoker)->resolve($func));
         assert\same([$this, __FUNCTION__], (new Invoker)->resolve([$this, __FUNCTION__]));
 
-        $resolver = new Invoker(fn\di(['callback' => value($func)]));
+        $resolver = new Invoker(fn\di()->container(['callback' => value($func)]));
         assert\same($func, $resolver->resolve('callback'));
     }
 
@@ -80,7 +80,7 @@ class InvokerTest extends \PHPUnit_Framework_TestCase
     private function resolver(array $definition = []): Invoker
     {
         return new Invoker(
-            fn\di($definition),
+            fn\di()->container($definition),
             function(\ReflectionParameter $parameter, array $provided) {
                 $map = fn\map(array_change_key_case($provided));
                 if (($value = $map->get(strtolower($parameter->getName()), null)) !== null) {

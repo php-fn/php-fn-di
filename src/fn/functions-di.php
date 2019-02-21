@@ -11,22 +11,21 @@ namespace fn\DI {
 }
 
 namespace fn\DI\WIRING {
+    const NONE       = null;
     const REFLECTION = 'reflection';
     const STRICT     = 'strict';
     const TOLERANT   = 'tolerant';
 }
 
+
 namespace fn {
-
-    use DI\Definition\Source\DefinitionSource;
-
     /**
-     * @param string|array|DefinitionSource $definition
-     * @param array                         $config
-     * @return DI\Container
+     * @param string|array $config
+     * @return DI\ContainerConfigurationFactory
      */
-    function di($definition = [], array $config = [])
+    function di($config = DI\WIRING\NONE): DI\ContainerConfigurationFactory
     {
-        return DI\ContainerConfigurationFactory::create($config, ...[$definition])->container();
+        $config = is_array($config) ? $config : [DI\WIRING => $config];
+        return new DI\ContainerConfigurationFactory($config);
     }
 }

@@ -9,6 +9,7 @@
 namespace fn\DI;
 
 use DI\ContainerBuilder;
+use DI\Definition\Source\DefinitionSource;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -54,7 +55,7 @@ class ContainerConfigurationFactory
 
     /** @noinspection PhpDocMissingThrowsInspection */
     /**
-     * @param mixed ...$definitions
+     * @param string|array|DefinitionSource ...$definitions
      *
      * @return ContainerConfiguration
      */
@@ -88,5 +89,15 @@ class ContainerConfigurationFactory
         /** @noinspection PhpUnhandledExceptionInspection */
         /** @noinspection PhpIncompatibleReturnTypeInspection */
         return $builder->build();
+    }
+
+    /**
+     * @param string|array|DefinitionSource ...$definitions
+     *
+     * @return Container
+     */
+    public function container(...$definitions): Container
+    {
+        return $this->configure(...$definitions)->container();
     }
 }
