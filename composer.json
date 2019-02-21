@@ -6,7 +6,7 @@
   "homepage": "https://github.com/php-fn/php-fn-di",
   "prefer-stable": true,
   "require": {
-    "php": ">=7.0",
+    "php": ">=7.1",
     "php-fn/php-fn": "^1",
     "php-fn/invoker": "^2",
     "php-di/php-di": "^6",
