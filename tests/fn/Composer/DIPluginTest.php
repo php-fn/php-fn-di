@@ -39,7 +39,7 @@ class DIPluginTest extends \PHPUnit_Framework_TestCase
                 [
                     'extra' => [
                         'di'        => 'config/di.php',
-                        'di-config' => ['wiring' => fn\DI\ContainerConfigurationFactory::WIRING_REFLECTION]
+                        'di-config' => [fn\DI\WIRING => fn\DI\WIRING\REFLECTION]
                     ]
                 ]
             ],
@@ -77,10 +77,10 @@ class DIPluginTest extends \PHPUnit_Framework_TestCase
                             'baz' => ['foo', 'bar'],
                         ],
                         'di-config' => [
-                            'wiring' => 'reflection',
+                            fn\DI\WIRING => fn\DI\WIRING\REFLECTION,
                             '@ns\c5' => 'cast-to-array',
                             '@ns\c1' => ['cache' => true],
-                            '@ns\c2' => ['wiring' => false],
+                            '@ns\c2' => [fn\DI\WIRING => false],
                         ],
                     ]
                 ]

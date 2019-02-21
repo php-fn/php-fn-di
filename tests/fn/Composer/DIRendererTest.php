@@ -8,7 +8,7 @@
 
 namespace fn\Composer;
 
-use fn\Composer\DIRenderer;
+use fn\DI;
 use fn\test\assert;
 
 /**
@@ -86,9 +86,9 @@ namespace ns1\\ns2 {
 }
 EOF
 , new DIRenderer('ns1\\ns2\\c1', [
-        'wiring' => 'reflection',
-        'cache' => false,
-        'proxy' => 'proxy.php',
+        DI\WIRING => DI\WIRING\REFLECTION,
+        'cache'   => false,
+        'proxy'   => 'proxy.php',
         'compile' => '/tmp/',
     ], [
         'ns1\\ns2\\ns3\\c2',

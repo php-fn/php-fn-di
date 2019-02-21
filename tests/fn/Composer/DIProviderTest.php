@@ -8,6 +8,7 @@
 
 namespace fn\Composer;
 
+use fn;
 use fn\test\assert;
 
 /**
@@ -29,25 +30,25 @@ class DIProviderTest extends \PHPUnit_Framework_TestCase
                 'expected' => [
                     new DIRenderer(
                         DI::class,
-                        ['wiring' => 'reflection'],
+                        [fn\DI\WIRING => fn\DI\WIRING\REFLECTION,],
                         ['ns\c1', 'ns\c5'],
                         [],
                         ['foo' => 'bar', 'bar' => 'foo', 'baz' => ['foo', 'bar']],
                         true
                     ),
-                    new DIRenderer('ns\c1', ['cache' => true, 'wiring' => 'reflection'], ['ns\c2', 'ns\c3']),
-                    new DIRenderer('ns\c2', ['wiring' => false], [], ['config/c2.php']),
+                    new DIRenderer('ns\c1', ['cache' => true, fn\DI\WIRING => fn\DI\WIRING\REFLECTION,], ['ns\c2', 'ns\c3']),
+                    new DIRenderer('ns\c2', [fn\DI\WIRING => false], [], ['config/c2.php']),
                     new DIRenderer(
                         'ns\c3',
-                        ['wiring' => 'reflection'],
+                        [fn\DI\WIRING => fn\DI\WIRING\REFLECTION,],
                         ['ns\c4'],
                         ['config/c31.php', 'config/c32.php'],
                         ['foo' => 'bar', 'bar' => ['foo' => ['a', 'b']]]
                     ),
-                    new DIRenderer('ns\c4', ['wiring' => 'reflection'], [], ['config/c4.php']),
+                    new DIRenderer('ns\c4', [fn\DI\WIRING => fn\DI\WIRING\REFLECTION,], [], ['config/c4.php']),
                     new DIRenderer(
                         'ns\c5',
-                        ['cast-to-array', 'wiring' => 'reflection'],
+                        ['cast-to-array', fn\DI\WIRING => fn\DI\WIRING\REFLECTION,],
                         ['ns\c4'],
                         ['config/c5.php']
                     )
@@ -74,10 +75,10 @@ class DIProviderTest extends \PHPUnit_Framework_TestCase
                     'baz' => ['foo', 'bar'],
                 ],
                 'config' => [
-                    'wiring' => 'reflection',
+                    fn\DI\WIRING => fn\DI\WIRING\REFLECTION,
                     '@ns\c5' => 'cast-to-array',
                     '@ns\c1' => ['cache' => true],
-                    '@ns\c2' => ['wiring' => false],
+                    '@ns\c2' => [fn\DI\WIRING => false],
                 ]
             ],
         ];

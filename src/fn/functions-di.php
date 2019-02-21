@@ -6,16 +6,27 @@
  * file that was distributed with this source code.
  */
 
-namespace fn;
+namespace fn\DI {
+    const WIRING = 'wiring';
+}
 
-use DI\Definition\Source\DefinitionSource;
+namespace fn\DI\WIRING {
+    const REFLECTION = 'reflection';
+    const STRICT     = 'strict';
+    const TOLERANT   = 'tolerant';
+}
 
-/**
- * @param string|array|DefinitionSource $definition
- * @param array                         $config
- * @return DI\Container
- */
-function di($definition = [], array $config = [])
-{
-    return DI\ContainerConfigurationFactory::create($config, ...[$definition])->container();
+namespace fn {
+
+    use DI\Definition\Source\DefinitionSource;
+
+    /**
+     * @param string|array|DefinitionSource $definition
+     * @param array                         $config
+     * @return DI\Container
+     */
+    function di($definition = [], array $config = [])
+    {
+        return DI\ContainerConfigurationFactory::create($config, ...[$definition])->container();
+    }
 }

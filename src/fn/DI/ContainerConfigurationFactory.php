@@ -15,10 +15,6 @@ use Psr\Container\ContainerInterface;
  */
 class ContainerConfigurationFactory
 {
-    const WIRING_REFLECTION = 'reflection';
-    const WIRING_STRICT = 'strict';
-    const WIRING_TOLERANT = 'tolerant';
-
     /**
      * @var array
      */
@@ -68,14 +64,14 @@ class ContainerConfigurationFactory
 
         $builder->useAutowiring(false)->useAnnotations(false)->ignorePhpDocErrors(false);
 
-        switch ($this->config['wiring'] ?? null) {
-            case self::WIRING_REFLECTION:
+        switch ($this->config[WIRING] ?? null) {
+            case WIRING\REFLECTION:
                 $builder->useAutowiring(true);
                 break;
-            case self::WIRING_TOLERANT:
+            case WIRING\TOLERANT:
                 $builder->useAnnotations(true)->ignorePhpDocErrors(true);
                 break;
-            case self::WIRING_STRICT:
+            case WIRING\STRICT:
                 $builder->useAnnotations(true)->ignorePhpDocErrors(false);
                 break;
         }
