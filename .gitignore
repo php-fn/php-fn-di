@@ -5,9 +5,7 @@
 
 ## dirs
 !/src/
-!/src/*
 !/tests/
-!/tests/*
 
 ## files
 !/.editorconfig
