@@ -8,6 +8,7 @@
 
 namespace fn\DI;
 
+use fn;
 use DI\ContainerBuilder;
 use DI\Definition\Source\DefinitionSource;
 use Psr\Container\ContainerInterface;
@@ -41,13 +42,13 @@ class ContainerConfigurationFactory
     }
 
     /**
-     * @param array $config
-     * @param mixed ...$definitions
+     * @param array                            $config
+     * @param string|array|DefinitionSource ...$definitions
      *
      * @return ContainerConfiguration
      */
     public static function create(
-        array $config,
+        array $config = [],
         ...$definitions
     ): ContainerConfiguration {
         return (new static($config))->configure(...$definitions);
@@ -65,21 +66,18 @@ class ContainerConfigurationFactory
 
         $builder->useAutowiring(false)->useAnnotations(false)->ignorePhpDocErrors(false);
 
-        switch ($this->config[WIRING] ?? null) {
-            case WIRING\REFLECTION:
-                $builder->useAutowiring(true);
-                break;
-            case WIRING\TOLERANT:
-                $builder->useAnnotations(true)->ignorePhpDocErrors(true);
-                break;
-            case WIRING\STRICT:
-                $builder->useAnnotations(true)->ignorePhpDocErrors(false);
-                break;
+        $wiring = $this->config[WIRING] ?? null;
+        if (fn\hasValue($wiring, [WIRING\REFLECTION, WIRING\AUTO])) {
+            $builder->useAutowiring(true);
+        } else if ($wiring === WIRING\STRICT) {
+            $builder->useAnnotations(true)->ignorePhpDocErrors(false);
+        } else if ($wiring === WIRING\TOLERANT) {
+            $builder->useAnnotations(true)->ignorePhpDocErrors(true);
         }
 
-        empty($this->config['cache']) || $builder->enableDefinitionCache();
-        empty($this->config['proxy']) || $builder->writeProxiesToFile(true, $this->config['proxy']);
-        empty($this->config['compile']) || $builder->enableCompilation($this->config['compile']);
+        empty($this->config[CACHE]) || $builder->enableDefinitionCache();
+        empty($this->config[PROXY]) || $builder->writeProxiesToFile(true, $this->config[PROXY]);
+        empty($this->config[COMPILE]) || $builder->enableCompilation($this->config[COMPILE]);
         $this->container && $builder->wrapContainer($this->container);
 
         foreach ($definitions as $definition) {
@@ -88,16 +86,9 @@ class ContainerConfigurationFactory
 
         /** @noinspection PhpUnhandledExceptionInspection */
         /** @noinspection PhpIncompatibleReturnTypeInspection */
-        return $builder->build();
-    }
-
-    /**
-     * @param string|array|DefinitionSource ...$definitions
-     *
-     * @return Container
-     */
-    public function container(...$definitions): Container
-    {
-        return $this->configure(...$definitions)->container();
+        $built = $builder->build();
+        return $built instanceof ContainerConfiguration
+            ? $built
+            : new ContainerConfiguration($built);
     }
 }

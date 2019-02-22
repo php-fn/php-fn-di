@@ -8,6 +8,7 @@
 
 namespace fn\DI;
 
+use DI\CompiledContainer;
 use DI\Definition\Source\MutableDefinitionSource;
 use DI\Proxy\ProxyFactory;
 use Psr\Container\ContainerInterface;
@@ -15,37 +16,39 @@ use Psr\Container\ContainerInterface;
 class ContainerConfiguration
 {
     /**
-     * @var MutableDefinitionSource
+     * @var MutableDefinitionSource|ContainerInterface
      */
     private $definitionSource;
+
     /**
      * @var ProxyFactory
      */
     private $proxyFactory;
+
     /**
-     * @var null|ContainerInterface
+     * @var ContainerInterface
      */
     private $wrapperContainer;
 
     /**
-     * @param MutableDefinitionSource $definitionSource
-     * @param ProxyFactory            $proxyFactory
-     * @param ContainerInterface|null $wrapperContainer
+     * @param MutableDefinitionSource|ContainerInterface $definitionSource
+     * @param ProxyFactory                               $proxyFactory
+     * @param ContainerInterface                         $wrapperContainer
      */
     public function __construct(
-        MutableDefinitionSource $definitionSource,
-        ProxyFactory $proxyFactory,
+        $definitionSource = null,
+        ProxyFactory $proxyFactory = null,
         ContainerInterface $wrapperContainer = null
     ) {
         $this->definitionSource = $definitionSource;
-        $this->proxyFactory = $proxyFactory;
+        $this->proxyFactory     = $proxyFactory;
         $this->wrapperContainer = $wrapperContainer;
     }
 
     /**
-     * @return MutableDefinitionSource
+     * @return MutableDefinitionSource|ContainerInterface
      */
-    public function getDefinitionSource(): MutableDefinitionSource
+    public function getDefinitionSource()
     {
         return $this->definitionSource;
     }
@@ -53,15 +56,15 @@ class ContainerConfiguration
     /**
      * @return ProxyFactory
      */
-    public function getProxyFactory(): ProxyFactory
+    public function getProxyFactory(): ?ProxyFactory
     {
         return $this->proxyFactory;
     }
 
     /**
-     * @return null|ContainerInterface
+     * @return ContainerInterface
      */
-    public function getWrapperContainer()
+    public function getWrapperContainer(): ?ContainerInterface
     {
         return $this->wrapperContainer;
     }
@@ -69,14 +72,13 @@ class ContainerConfiguration
     /**
      * @param string $containerClass
      *
-     * @return Container
+     * @return ContainerInterface|Container|CompiledContainer
      */
-    public function container(string $containerClass = Container::class)
+    public function container(string $containerClass = Container::class): ContainerInterface
     {
-        return new $containerClass(
-            $this->getDefinitionSource(),
-            $this->getProxyFactory(),
-            $this->getWrapperContainer()
-        );
+        if (($source = $this->getDefinitionSource()) instanceof MutableDefinitionSource) {
+            return new $containerClass($source, $this->getProxyFactory(), $this->getWrapperContainer());
+        }
+        return $source;
     }
 }
