@@ -72,10 +72,8 @@ class DIPlugin implements PluginInterface, EventSubscriberInterface
                 '::getLoader());',
                 <<<EOF
 return call_user_func(function(\$loader) {
-    return fn\\Composer\\DIClassLoader::instance(
-        \$loader,
-        __DIR__ . '/composer/autoload_php-fn-di.php'
-    );
+    require_once __DIR__ . '/composer/autoload_php-fn-di.php';
+    return fn\\Composer\\DIClassLoader::instance(\$loader);
 }, ComposerAutoloaderInit
 EOF
             ],

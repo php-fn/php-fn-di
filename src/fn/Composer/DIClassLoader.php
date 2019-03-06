@@ -20,21 +20,15 @@ class DIClassLoader extends Autoload\ClassLoader
     private $classLoader;
 
     /**
-     * @var string
-     */
-    private $autoloadFile;
-
-    /**
      * @param Autoload\ClassLoader|null $classLoader
-     * @param string $autoloadFile
      *
      * @return static
      */
-    public static function instance(Autoload\ClassLoader $classLoader = null, string $autoloadFile = null): self
+    public static function instance(Autoload\ClassLoader $classLoader = null): self
     {
         static $instance;
         if (!$instance) {
-            $instance = new self($classLoader, $autoloadFile);
+            $instance = new self($classLoader);
         }
         return $instance;
     }
@@ -42,10 +36,9 @@ class DIClassLoader extends Autoload\ClassLoader
     /**
      * @param Autoload\ClassLoader $proxy
      */
-    private function __construct(Autoload\ClassLoader $proxy, string $autoloadFile)
+    private function __construct(Autoload\ClassLoader $proxy)
     {
         $this->classLoader = $proxy;
-        $this->autoloadFile = $autoloadFile;
     }
 
     /**
@@ -56,7 +49,6 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function __invoke($callable, array $params = [])
     {
-        require_once $this->autoloadFile;
         static $di;
         /** @var \fn\DI\Container $di */
         $di = $di ?: new DI;
