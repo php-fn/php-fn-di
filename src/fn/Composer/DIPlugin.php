@@ -11,7 +11,6 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use fn;
 
 /**
  */
@@ -46,7 +45,7 @@ class DIPlugin implements PluginInterface, EventSubscriberInterface
 
         self::generateAutoloadFile(
             $file = $vendorDir . 'composer/autoload_php-fn-di.php',
-            \implode(PHP_EOL, fn\traverse($provider)),
+            \implode(PHP_EOL, \iterator_to_array($provider)),
             (string)$packages
         );
         $event->getIO()->write("<info>Autoload class '$file' generated</info>");

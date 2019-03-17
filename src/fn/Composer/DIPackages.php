@@ -6,19 +6,84 @@
 namespace fn\Composer;
 
 use Composer\Package\RootPackageInterface;
-use fn;
 use Composer\Composer;
 use Composer\Package\CompletePackageInterface;
-use Composer\Package\PackageInterface;
-use IteratorAggregate;
 use Symfony\Component\Filesystem\Filesystem as FS;
 use Composer\Util\Filesystem;
 
 /**
  * generate namespace constants for installed packages on autoload dump
  */
-class DIPackages implements IteratorAggregate
+class DIPackages
 {
+    public const RESERVED = [
+        '__halt_compiler',
+        'abstract',
+        'and',
+        'array',
+        'as',
+        'break',
+        'callable',
+        'case',
+        'catch',
+        'class',
+        'clone',
+        'const',
+        'continue',
+        'declare',
+        'default',
+        'die',
+        'do',
+        'echo',
+        'else',
+        'elseif',
+        'empty',
+        'enddeclare',
+        'endfor',
+        'endforeach',
+        'endif',
+        'endswitch',
+        'endwhile',
+        'eval',
+        'exit',
+        'extends',
+        'final',
+        'for',
+        'foreach',
+        'function',
+        'global',
+        'goto',
+        'if',
+        'implements',
+        'include',
+        'include_once',
+        'instanceof',
+        'insteadof',
+        'interface',
+        'isset',
+        'list',
+        'namespace',
+        'new',
+        'or',
+        'print',
+        'private',
+        'protected',
+        'public',
+        'require',
+        'require_once',
+        'return',
+        'static',
+        'switch',
+        'throw',
+        'trait',
+        'try',
+        'unset',
+        'use',
+        'var',
+        'while',
+        'xor'
+    ];
+
     public $vendorDir;
     private $composer;
 
@@ -36,21 +101,21 @@ class DIPackages implements IteratorAggregate
     /**
      * @inheritdoc
      */
-    public function getIterator()
+    public function getVendors(): iterable
     {
         $packages   = $this->composer->getRepositoryManager()->getLocalRepository()->getPackages();
         $packages[] = $this->composer->getPackage();
-        $im = $this->composer->getInstallationManager();
-        $fs = new FS;
-
-        return fn\map($packages, function(PackageInterface $package) use($im, $fs) {
+        $vendors    = [];
+        $im         = $this->composer->getInstallationManager();
+        $fs         = new FS;
+        foreach ($packages as $package) {
             if (strpos($name = $package->getName(), '/') === false) {
-                return null;
+                continue;
             }
             $path = $package instanceof RootPackageInterface ? null : $im->getInstallPath($package);
             $dir  = $path ? $fs->makePathRelative($path, $this->vendorDir) : null;
             [$vendor, $library] = explode('/', $name);
-            return fn\mapGroup($vendor)->andKey($library)->andValue([
+            $vendors[$vendor][$library] = [
                 'name'        => $name,
                 'version'     => $package->getVersion(),
                 'description' => $package instanceof CompletePackageInterface ? $package->getDescription() : null,
@@ -58,13 +123,14 @@ class DIPackages implements IteratorAggregate
                 'authors'     => $package instanceof CompletePackageInterface ? $package->getAuthors() : [],
                 'dir'         => $dir,
                 'extra'       => $package->getExtra(),
-            ]);
-        });
+            ];
+        }
+        return $vendors;
     }
 
     private function up($string): string
     {
-        $string .= fn\hasValue(strtolower($string), fn\PHP\RESERVED) ?  '_' : '';
+        $string .= in_array(strtolower($string), self::RESERVED, true) ?  '_' : '';
         return str_replace('-', '_', strtoupper($string));
     }
 
@@ -80,7 +146,7 @@ class DIPackages implements IteratorAggregate
             '    const PACKAGES = [',
         ];
 
-        foreach ($this as $vendor => $packages) {
+        foreach ($this->getVendors() as $vendor => $packages) {
             $ns[] = "namespace fn\\VENDOR\\{$this->up($vendor)} {";
             foreach ($packages as $name => $package) {
                 $ns[] = "    const {$this->up($name)} = '{$package['name']}';";
@@ -93,8 +159,8 @@ class DIPackages implements IteratorAggregate
                 $const[] = "            'description' => " . var_export($package['description'], true) . ',';
                 $const[] = "            'homepage'    => " . var_export($package['homepage'], true) . ',';
                 $const[] = "            'dir'         => $dir,";
-                $const[] = "            'authors'     => " . new fn\ArrayExport((array)$package['authors']) . ',';
-                $const[] = "            'extra'       => " . new fn\ArrayExport($package['extra']) . ',';
+                $const[] = "            'authors'     => " . new \fn\ArrayExport((array)$package['authors']) . ',';
+                $const[] = "            'extra'       => " . new \fn\ArrayExport($package['extra']) . ',';
                 $const[] = '        ],';
                 $const[] = '';
             }
