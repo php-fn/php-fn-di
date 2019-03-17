@@ -1,9 +1,6 @@
 <?php
 /**
- * (c) php-fn
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
 namespace fn\Composer;
@@ -14,7 +11,7 @@ use fn\test\assert;
 /**
  * @coversDefaultClass DIRenderer
  */
-class DIRendererTest extends \PHPUnit_Framework_TestCase
+class DIRendererTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @return array

@@ -1,9 +1,6 @@
 <?php
 /**
- * (c) php-fn
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
 namespace fn\DI;
@@ -11,7 +8,7 @@ namespace fn\DI;
 use fn\test\assert;
 use DI;
 
-class ContainerTest extends \PHPUnit_Framework_TestCase
+class ContainerTest extends \PHPUnit\Framework\TestCase
 {
     /**
      * @covers Container::addDefinition

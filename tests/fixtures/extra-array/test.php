@@ -17,5 +17,7 @@ echo call_user_func(require __DIR__ . '/vendor/autoload.php', function(
         'c3-value' => $c3->get('bar'),
         'c4-file' => $c4->get('c4'),
         'c5-file' => $c5->get('c5'),
+        'base-dir' => \substr(fn\PACKAGES[fn\VENDOR\PHP_FN\EXTRA_ARRAY]['dir'], -13),
+        'vendor-dir' => \substr(fn\PACKAGES[fn\VENDOR\PHP_DI\PHP_DI]['dir'], -34),
     ], JSON_PRETTY_PRINT);
 });

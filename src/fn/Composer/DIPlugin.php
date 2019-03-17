@@ -11,7 +11,7 @@ use Composer\IO\IOInterface;
 use Composer\Plugin\PluginInterface;
 use Composer\Script\Event;
 use Composer\Script\ScriptEvents;
-use Composer\Util\Filesystem;
+use fn;
 
 /**
  */
@@ -37,15 +37,17 @@ class DIPlugin implements PluginInterface, EventSubscriberInterface
      */
     public static function onAutoloadDump(Event $event)
     {
-        $composer = $event->getComposer();
+        $composer  = $event->getComposer();
+        $packages  = new DIPackages($composer);
+        $vendorDir = $packages->vendorDir;
+        $extra     = $composer->getPackage()->getExtra();
 
-        $fs        = new Filesystem;
-        $vendorDir = $fs->normalizePath(realpath(realpath($composer->getConfig()->get('vendor-dir')))) . '/';
+        $provider  = new DIProvider((array)($extra['di'] ?? []), (array)($extra['di-config'] ?? []));
 
         self::generateAutoloadFile(
             $file = $vendorDir . 'composer/autoload_php-fn-di.php',
-            $composer->getPackage()->getExtra()['di'] ?? [],
-            $composer->getPackage()->getExtra()['di-config'] ?? []
+            \implode(PHP_EOL, fn\traverse($provider)),
+            (string)$packages
         );
         $event->getIO()->write("<info>Autoload class '$file' generated</info>");
 
@@ -78,12 +80,8 @@ EOF
         ));
     }
 
-    private static function generateAutoloadFile(string $file, $di, $config)
+    private static function generateAutoloadFile(string $file, string $classes, string $packages)
     {
-        $classes = \implode(
-            PHP_EOL,
-            \iterator_to_array(new DIProvider((array)$di, (array)$config)
-        ));
 
         \file_put_contents($file, <<<EOF
 <?php
@@ -93,6 +91,8 @@ namespace fn {
     define(__NAMESPACE__ . '\VENDOR_DIR', dirname(dirname(__FILE__)) . \DIRECTORY_SEPARATOR);
     define(__NAMESPACE__ . '\BASE_DIR', dirname(VENDOR_DIR) . \DIRECTORY_SEPARATOR);
 }
+
+$packages
 
 $classes
 EOF

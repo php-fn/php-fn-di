@@ -14,7 +14,7 @@ use Composer;
 
 /**
  */
-class DIPluginTest extends \PHPUnit_Framework_TestCase
+class DIPluginTest extends \PHPUnit\Framework\TestCase
 {
     private static $TARGET;
 
@@ -32,17 +32,18 @@ class DIPluginTest extends \PHPUnit_Framework_TestCase
     public static function providerOnAutoloadDump(): array
     {
         return [
-            'extra-empty'  => [DI::class, ['extra' => []]],
-            'extra-string' => ['di.php', ['extra' => ['di' => 'config/di.php']]],
-            'extra-string-reflection' => [
-                \DI\ContainerBuilder::class,
-                [
-                    'extra' => [
-                        'di'        => 'config/di.php',
-                        'di-config' => [fn\DI\WIRING => fn\DI\WIRING\REFLECTION]
-                    ]
-                ]
-            ],
+//            'extra-empty'  => [DI::class, ['extra' => []]],
+//            'extra-string' => ['di.php', ['name' => 'php-fn/extra-string', 'extra' => ['di' => 'config/di.php']]],
+//            'extra-string-reflection' => [
+//                \DI\ContainerBuilder::class,
+//                [
+//                    'name'  => 'php-fn/extra-string-reflection',
+//                    'extra' => [
+//                        'di'        => 'config/di.php',
+//                        'di-config' => [fn\DI\WIRING => fn\DI\WIRING\REFLECTION]
+//                    ]
+//                ]
+//            ],
             'extra-array' => [
                 \json_encode([
                     'invoker-value' => 'foo',
@@ -52,8 +53,11 @@ class DIPluginTest extends \PHPUnit_Framework_TestCase
                     'c3-value' => ['foo' => ['a', 'b']],
                     'c4-file' => 'C4',
                     'c5-file' => 'C5',
+                    'base-dir' => '/extra-array/',
+                    'vendor-dir' => '/extra-array/vendor/php-di/php-di/',
                 ], JSON_PRETTY_PRINT),
                 [
+                    'name'  => 'php-fn/extra-array',
                     'extra' => [
                         'di' => [
                             'foo' => 'bar',
@@ -96,7 +100,7 @@ class DIPluginTest extends \PHPUnit_Framework_TestCase
      * @param mixed $expected
      * @param array $config
      */
-    public function testOnAutoloadDump($expected, array $config)
+    public function testOnAutoloadDump($expected, array $config): void
     {
         (new Composer\Util\Filesystem)->copy(
             \dirname(__DIR__, 2) . "/fixtures/{$this->dataDescription()}",
@@ -105,9 +109,11 @@ class DIPluginTest extends \PHPUnit_Framework_TestCase
         $cwd = \dirname($this->jsonFile($config));
 
         $executor = new Composer\Util\ProcessExecutor;
-        $executor->execute('composer install -q --prefer-dist --no-dev', $output = '', $cwd);
+        $output = '';
+        $executor->execute(__DIR__ . '/../../../vendor/bin/composer install --prefer-dist --no-dev', $output, $cwd);
+        assert\equals("vendor/autoload.php' modified\n", substr($output, -30));
         $executor->execute('php -d apc.enable_cli=1 test.php', $output, $cwd);
-
+        assert\equals('', $executor->getErrorOutput());
         assert\equals($expected, $output);
     }
 
