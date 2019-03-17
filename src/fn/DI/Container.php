@@ -32,6 +32,8 @@ class Container extends \DI\Container implements MutableDefinitionSource
             );
         }
         parent::__construct($this->definitionSource = $definitionSource, $proxyFactory, $wrapperContainer);
+        $this->resolvedEntries[self::class]   = $this;
+        $this->resolvedEntries[static::class] = $this;
     }
 
     /**
