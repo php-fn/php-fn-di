@@ -18,7 +18,6 @@ namespace fn\DI\WIRING {
     const TOLERANT   = 'tolerant';
 }
 
-
 namespace fn {
 
     use DI\CompiledContainer;
