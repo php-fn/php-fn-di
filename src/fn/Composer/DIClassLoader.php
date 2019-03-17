@@ -3,6 +3,8 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
+/** @noinspection PhpUndefinedClassInspection */
+
 namespace fn\Composer;
 
 use Composer\Autoload;
@@ -15,6 +17,10 @@ class DIClassLoader extends Autoload\ClassLoader
      * @var Autoload\ClassLoader
      */
     private $classLoader;
+    /**
+     * @var \fn\DI\Container
+     */
+    private $container;
 
     /**
      * @param Autoload\ClassLoader|null $classLoader
@@ -39,6 +45,14 @@ class DIClassLoader extends Autoload\ClassLoader
     }
 
     /**
+     * @return DI|\fn\DI\Container
+     */
+    public function getContainer()
+    {
+        return $this->container ?: $this->container = new DI;
+    }
+
+    /**
      * @param callable $callable
      * @param array    $params
      *
@@ -46,10 +60,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function __invoke($callable, array $params = [])
     {
-        static $di;
-        /** @var \fn\DI\Container $di */
-        $di = $di ?: new DI;
-        return $di->call($callable, $params);
+        return $this->getContainer()->call($callable, $params);
     }
 
     /**

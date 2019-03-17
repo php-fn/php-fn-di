@@ -47,3 +47,13 @@ namespace fn {
         return DI\ContainerConfigurationFactory::create($config, ...$args)->container();
     }
 }
+
+namespace fn\Composer {
+    /**
+     * @return DI|\fn\DI\Container
+     */
+    function di()
+    {
+        return DIClassLoader::instance()->getContainer();
+    }
+}
