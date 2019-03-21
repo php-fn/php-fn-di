@@ -14,7 +14,7 @@ trait PropertiesReadOnlyTrait
     /**
      * @inheritdoc
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         fn\fail('class %s has read-only access for magic-properties: %s', static::class, $name);
     }
@@ -22,7 +22,7 @@ trait PropertiesReadOnlyTrait
     /**
      * @inheritdoc
      */
-    public function __unset($name)
+    public function __unset($name): void
     {
         fn\fail('class %s has read-only access for magic-properties: %s', static::class, $name);
     }

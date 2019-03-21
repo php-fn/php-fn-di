@@ -32,18 +32,18 @@ class DIPluginTest extends \PHPUnit\Framework\TestCase
     public static function providerOnAutoloadDump(): array
     {
         return [
-//            'extra-empty'  => [DI::class, ['extra' => []]],
-//            'extra-string' => ['di.php', ['name' => 'php-fn/extra-string', 'extra' => ['di' => 'config/di.php']]],
-//            'extra-string-reflection' => [
-//                \DI\ContainerBuilder::class,
-//                [
-//                    'name'  => 'php-fn/extra-string-reflection',
-//                    'extra' => [
-//                        'di'        => 'config/di.php',
-//                        'di-config' => [fn\DI\WIRING => fn\DI\WIRING\REFLECTION]
-//                    ]
-//                ]
-//            ],
+            'extra-empty'  => [DI::class, ['extra' => []]],
+            'extra-string' => ['di.php', ['name' => 'php-fn/extra-string', 'extra' => ['di' => 'config/di.php']]],
+            'extra-string-reflection' => [
+                \DI\ContainerBuilder::class,
+                [
+                    'name'  => 'php-fn/extra-string-reflection',
+                    'extra' => [
+                        'di'        => 'config/di.php',
+                        'di-config' => [fn\DI\WIRING => fn\DI\WIRING\REFLECTION]
+                    ]
+                ]
+            ],
             'extra-array' => [
                 \json_encode([
                     'invoker-value' => 'foo',

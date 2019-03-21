@@ -15,7 +15,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
      * @covers Container::getDefinition
      * @covers Container::getDefinitions
      */
-    public function testDefinitionSource()
+    public function testDefinitionSource(): void
     {
         $container = new Container;
         assert\type(DI\Definition\Source\MutableDefinitionSource::class, $container);
@@ -30,7 +30,7 @@ class ContainerTest extends \PHPUnit\Framework\TestCase
         assert\same('bar', $container->get('foo'));
     }
 
-    public function testNested()
+    public function testNested(): void
     {
         $c1 = new Container;
         $c2 = new Container;

@@ -13,7 +13,6 @@ use function fn\di;
 use fn\test\assert;
 use fn\DI\ContainerConfigurationFactory as F;
 
-
 class ContainerConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
 {
     /**

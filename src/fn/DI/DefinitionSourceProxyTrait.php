@@ -24,7 +24,7 @@ trait DefinitionSourceProxyTrait
      * @param string $name
      * @return Definition|null
      */
-    public function getDefinition(string $name)
+    public function getDefinition(string $name): ?Definition
     {
         /** @noinspection PhpUnhandledExceptionInspection */
         return $this->definitionSource->getDefinition($name);

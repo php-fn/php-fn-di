@@ -47,7 +47,7 @@ class DIClassLoader extends Autoload\ClassLoader
     /**
      * @return DI|\fn\DI\Container
      */
-    public function getContainer()
+    public function getContainer(): DI
     {
         return $this->container ?: $this->container = new DI;
     }

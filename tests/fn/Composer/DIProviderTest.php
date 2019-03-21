@@ -88,7 +88,7 @@ class DIProviderTest extends \PHPUnit\Framework\TestCase
      * @param array $di
      * @param array $config
      */
-    public function testGetIterator(array $expected, array $di, array $config)
+    public function testGetIterator(array $expected, array $di, array $config): void
     {
         $actual = [];
         foreach (new DIProvider($di, $config) as $renderer) {

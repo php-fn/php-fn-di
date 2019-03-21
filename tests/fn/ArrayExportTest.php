@@ -5,7 +5,6 @@
 
 namespace fn;
 
-use fn\ArrayExport;
 use fn\test\assert;
 
 /**
@@ -13,7 +12,6 @@ use fn\test\assert;
  */
 class ArrayExportTest extends \PHPUnit\Framework\TestCase
 {
-
     /**
      * @return array
      */
@@ -43,7 +41,7 @@ class ArrayExportTest extends \PHPUnit\Framework\TestCase
      * @param string $expected
      * @param array $array
      */
-    public function testToString(string $expected, array $array)
+    public function testToString(string $expected, array $array): void
     {
         $export = new ArrayExport($array);
         assert\same($expected, (string)$export);

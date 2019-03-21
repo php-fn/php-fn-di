@@ -3,10 +3,12 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn {
+namespace fn
+{
 
     use DI\CompiledContainer;
     use DI\Definition\Source\DefinitionSource;
+    use Psr\Container\ContainerInterface;
 
     /**
      * Create a container from the given definitions.
@@ -16,7 +18,7 @@ namespace fn {
      * @param string|array|DefinitionSource|callable|true ...$args
      * @return DI\Container|CompiledContainer
      */
-    function di(...$args)
+    function di(...$args): ContainerInterface
     {
         $last = array_pop($args);
 
@@ -33,11 +35,12 @@ namespace fn {
     }
 }
 
-namespace fn\Composer {
+namespace fn\Composer
+{
     /**
      * @return DI|\fn\DI\Container
      */
-    function di()
+    function di(): DI
     {
         return DIClassLoader::instance()->getContainer();
     }

@@ -36,7 +36,7 @@ class DIRendererTest extends \PHPUnit\Framework\TestCase
      * @param string $expectedNameSpace
      * @param string $class
      */
-    public function testClass(string $expectedClassName, string $expectedNameSpace, string $class)
+    public function testClass(string $expectedClassName, string $expectedNameSpace, string $class): void
     {
         $renderer = new DIRenderer($class);
         assert\same($expectedClassName, $renderer->getClassName());
@@ -141,7 +141,7 @@ EOF
      * @param string $expected
      * @param DIRenderer $renderer
      */
-    public function testToString(string $expected, DIRenderer $renderer)
+    public function testToString(string $expected, DIRenderer $renderer): void
     {
         assert\same($expected, (string)$renderer);
     }

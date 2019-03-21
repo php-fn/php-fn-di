@@ -60,7 +60,7 @@ class DIProvider implements IteratorAggregate
     /**
      * @inheritdoc
      */
-    public function getIterator()
+    public function getIterator(): ArrayIterator
     {
         return $this->di;
     }

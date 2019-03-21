@@ -19,7 +19,7 @@ class DIPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @inheritdoc
      */
-    public function activate(Composer $composer, IOInterface $io)
+    public function activate(Composer $composer, IOInterface $io): void
     {
     }
 
@@ -34,7 +34,7 @@ class DIPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @param Event $event
      */
-    public static function onAutoloadDump(Event $event)
+    public static function onAutoloadDump(Event $event): void
     {
         $composer  = $event->getComposer();
         $packages  = new DIPackages($composer);
@@ -57,7 +57,7 @@ class DIPlugin implements PluginInterface, EventSubscriberInterface
     /**
      * @param string $file
      */
-    private static function modifyAutoloadFile(string $file)
+    private static function modifyAutoloadFile(string $file): void
     {
         \file_put_contents($file,  \str_replace(
             [
@@ -79,7 +79,7 @@ EOF
         ));
     }
 
-    private static function generateAutoloadFile(string $file, string $classes, string $packages)
+    private static function generateAutoloadFile(string $file, string $classes, string $packages): void
     {
 
         \file_put_contents($file, <<<EOF

@@ -36,7 +36,7 @@ trait PropertiesReadWriteTrait
      * @param string $name
      * @param mixed  $value
      */
-    public function __set($name, $value)
+    public function __set($name, $value): void
     {
         $this->_getContainer(\DI\Container::class)->set($name, $value);
     }
@@ -44,7 +44,7 @@ trait PropertiesReadWriteTrait
     /**
      * @param string $name
      */
-    public function __unset($name)
+    public function __unset($name): void
     {
         $this->__set($name, null);
     }
@@ -65,7 +65,7 @@ trait PropertiesReadWriteTrait
      *
      * @return bool
      */
-    public function __isset($name)
+    public function __isset($name): bool
     {
         return $this->_getContainer()->has($name);
     }

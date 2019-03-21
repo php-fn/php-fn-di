@@ -15,7 +15,7 @@ class InvokerTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Invoker::resolve
      */
-    public function testResolve()
+    public function testResolve(): void
     {
         assert\exception('argument $candidate is not callable', function() {
             (new Invoker)->resolve('count');
@@ -31,7 +31,7 @@ class InvokerTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Invoker::reflect
      */
-    public function testReflect()
+    public function testReflect(): void
     {
         $resolver = $this->resolver(['callback' => value(function(string $s1){})]);
         assert\type(\ReflectionFunction::class, $resolver->reflect('callback'));
@@ -41,7 +41,7 @@ class InvokerTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Invoker::parameters
      */
-    public function testParameters()
+    public function testParameters(): void
     {
         $resolver = $this->resolver([\PHPUnit_Framework_TestCase::class => $this, static::class => $this]);
         $callback = function(
@@ -61,7 +61,7 @@ class InvokerTest extends \PHPUnit\Framework\TestCase
     /**
      * @covers Invoker::call
      */
-    public function testCall()
+    public function testCall(): void
     {
         assert\same(
             [$this, true, 'value'],
