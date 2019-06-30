@@ -4,7 +4,6 @@
   "type": "composer-plugin",
   "license": "MIT",
   "homepage": "https://github.com/php-fn/php-fn-di",
-  "prefer-stable": true,
   "require": {
     "php": ">=7.1",
     "php-fn/php-fn": "^2.0",
@@ -13,11 +12,12 @@
     "composer-plugin-api": "^1"
   },
   "require-dev": {
-    "roave/security-advisories": "dev-master",
     "docker-xampp/bin": "^1",
     "php-fn/test": "^1",
     "doctrine/annotations": "^1",
-    "composer/composer": "^1"
+    "composer/composer": "^1",
+
+    "roave/security-advisories": "dev-master"
   },
   "autoload": {
     "psr-4": {
@@ -32,7 +32,12 @@
       "fn\\": ["tests/fn"]
     }
   },
+  "minimum-stability": "dev",
+  "prefer-stable": true,
   "extra": {
+    "branch-alias": {
+      "dev-master": "2.x-dev"
+    },
     "class": "fn\\Composer\\DIPlugin"
   }
 }
