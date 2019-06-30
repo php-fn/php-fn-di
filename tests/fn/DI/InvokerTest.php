@@ -9,19 +9,26 @@ use function DI\value;
 use fn;
 use fn\test\assert;
 use Invoker\ParameterResolver\DefaultValueResolver;
+use PHPUnit\Framework\TestCase;
+use ReflectionFunction;
+use ReflectionMethod;
+use ReflectionParameter;
 
-class InvokerTest extends \PHPUnit\Framework\TestCase
+/**
+ * @coversDefaultClass Invoker
+ */
+class InvokerTest extends TestCase
 {
     /**
-     * @covers Invoker::resolve
+     * @covers ::resolve
      */
     public function testResolve(): void
     {
-        assert\exception('argument $candidate is not callable', function() {
+        assert\exception('argument $candidate is not callable', static function () {
             (new Invoker)->resolve('count');
         });
 
-        assert\same($func = function() {}, (new Invoker)->resolve($func));
+        assert\same($func = static function () {}, (new Invoker)->resolve($func));
         assert\same([$this, __FUNCTION__], (new Invoker)->resolve([$this, __FUNCTION__]));
 
         $resolver = new Invoker(fn\di(['callback' => value($func)]));
@@ -29,26 +36,26 @@ class InvokerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers Invoker::reflect
+     * @covers ::reflect
      */
     public function testReflect(): void
     {
-        $resolver = $this->resolver(['callback' => value(function(string $s1){})]);
-        assert\type(\ReflectionFunction::class, $resolver->reflect('callback'));
-        assert\type(\ReflectionMethod::class, $resolver->reflect([$this, __FUNCTION__]));
+        $resolver = $this->resolver(['callback' => value(static function (string $s1) {})]);
+        assert\type(ReflectionFunction::class, $resolver->reflect('callback'));
+        assert\type(ReflectionMethod::class, $resolver->reflect([$this, __FUNCTION__]));
     }
 
     /**
-     * @covers Invoker::parameters
+     * @covers ::parameters
      */
     public function testParameters(): void
     {
-        $resolver = $this->resolver([\PHPUnit_Framework_TestCase::class => $this, static::class => $this]);
-        $callback = function(
+        $resolver = $this->resolver([TestCase::class => $this, static::class => $this]);
+        $callback = static function (
             string $p1,
             self $p2,
             bool $p3 = false,
-            \PHPUnit_Framework_TestCase $p4 = null
+            TestCase $p4 = null
         ) {};
 
         assert\equals([1 => $this, 3 => $this, 2 => false], $resolver->parameters($callback));
@@ -59,14 +66,14 @@ class InvokerTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
-     * @covers Invoker::call
+     * @covers ::call
      */
     public function testCall(): void
     {
         assert\same(
             [$this, true, 'value'],
             $this->resolver([static::class => $this])->call(
-                function(self $test, $default = true, $provided = null) {
+                static function (self $test, $default = true, $provided = null) {
                     return [$test, $default, $provided];
                 },
                 ['provided' => 'value']
@@ -78,7 +85,7 @@ class InvokerTest extends \PHPUnit\Framework\TestCase
     {
         return new Invoker(
             fn\di($definition),
-            function(\ReflectionParameter $parameter, array $provided) {
+            static function (ReflectionParameter $parameter, array $provided) {
                 $map = fn\map(array_change_key_case($provided));
                 if (($value = $map->get(strtolower($parameter->getName()), null)) !== null) {
                     yield $value;
