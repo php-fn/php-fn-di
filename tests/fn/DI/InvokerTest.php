@@ -12,7 +12,6 @@ use Invoker\ParameterResolver\DefaultValueResolver;
 use PHPUnit\Framework\TestCase;
 use ReflectionFunction;
 use ReflectionMethod;
-use ReflectionParameter;
 
 /**
  * @coversDefaultClass Invoker
@@ -81,11 +80,36 @@ class InvokerTest extends TestCase
         );
     }
 
+    /**
+     * @covers \fn\DI\ReflectionParameter::resolveDescription
+     * @covers \fn\DI\ReflectionParameter::resolveTypes
+     */
+    public function testTaggedParameter(): void
+    {
+        $invoker = new Invoker(static function (ReflectionParameter $par) {
+            yield [$par->getName(), $par->description, (string)$par->types];
+        });
+
+        assert\same([
+            ['string', 'foo', 'string'],
+            ['bool', 'bar', 'bool'],
+            ['strings', '', 'string[]'],
+        ], $invoker->parameters(
+            /**
+             * @param string $string foo
+             * @param bool $bool bar
+             * @param string[] $strings
+             */
+            static function(string $string, bool $bool, array $strings) {
+            }
+        ));
+    }
+
     private function resolver(array $definition = []): Invoker
     {
         return new Invoker(
             fn\di($definition),
-            static function (ReflectionParameter $parameter, array $provided) {
+            static function (\ReflectionParameter $parameter, array $provided) {
                 $map = fn\map(array_change_key_case($provided));
                 if (($value = $map->get(strtolower($parameter->getName()), null)) !== null) {
                     yield $value;

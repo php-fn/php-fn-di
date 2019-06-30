@@ -37,7 +37,11 @@ class Invoker extends ParameterResolver\ResolverChain implements InvokerInterfac
                 $this->invoker = new \Invoker\Invoker($this, $candidate);
                 return new ParameterResolver\Container\TypeHintContainerResolver($candidate);
             }
-            return new GeneratorResolver($candidate);
+            return new GeneratorResolver(static function ($parameter, array $provided = [], $tag = null) use (
+                $candidate
+            ) {
+                return $candidate(new ReflectionParameter($parameter, $tag), $provided, $tag);
+            });
         }));
     }
 
