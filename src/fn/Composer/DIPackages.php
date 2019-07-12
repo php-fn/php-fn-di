@@ -123,6 +123,7 @@ class DIPackages
                 'homepage'    => $package instanceof CompletePackageInterface ? $package->getHomepage() : null,
                 'authors'     => $package instanceof CompletePackageInterface ? $package->getAuthors() : [],
                 'dir'         => $dir,
+                'root'        => $dir === null,
                 'extra'       => $package->getExtra(),
             ];
         }

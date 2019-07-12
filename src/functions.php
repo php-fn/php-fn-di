@@ -32,6 +32,17 @@ namespace fn
         }
         return DI\ContainerConfigurationFactory::create($config, ...$args)->container();
     }
+
+    /**
+     * @param string $name
+     * @param bool $assert
+     *
+     * @return Package|null
+     */
+    function package(string $name, bool $assert = false): ?Package
+    {
+        return Package::get(...func_get_args());
+    }
 }
 
 namespace fn\Composer
