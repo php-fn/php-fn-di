@@ -1,9 +1,6 @@
 <?php
 /**
- * (c) php-fn
- *
- * For the full copyright and license information, please view the LICENSE
- * file that was distributed with this source code.
+ * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
 namespace fn\Composer;
@@ -11,10 +8,11 @@ namespace fn\Composer;
 use fn;
 use fn\test\assert;
 use Composer;
+use PHPUnit\Framework\TestCase;
 
 /**
  */
-class DIPluginTest extends \PHPUnit\Framework\TestCase
+class DIPluginTest extends TestCase
 {
     private static $TARGET;
 
@@ -45,7 +43,7 @@ class DIPluginTest extends \PHPUnit\Framework\TestCase
                 ]
             ],
             'extra-array' => [
-                \json_encode([
+                json_encode([
                     'invoker-value' => 'foo',
                     'c2-file' => 'C2',
                     'c31-file' => 'C31',
@@ -93,6 +91,8 @@ class DIPluginTest extends \PHPUnit\Framework\TestCase
     }
 
     /**
+     * @group heavy
+     *
      * @dataProvider providerOnAutoloadDump
      *
      * @covers       DIPlugin::onAutoloadDump
@@ -103,10 +103,10 @@ class DIPluginTest extends \PHPUnit\Framework\TestCase
     public function testOnAutoloadDump($expected, array $config): void
     {
         (new Composer\Util\Filesystem)->copy(
-            \dirname(__DIR__, 2) . "/fixtures/{$this->dataDescription()}",
+            dirname(__DIR__, 2) . "/fixtures/{$this->dataDescription()}",
             self::target($this->dataDescription())
         );
-        $cwd = \dirname($this->jsonFile($config));
+        $cwd = dirname($this->jsonFile($config));
 
         $executor = new Composer\Util\ProcessExecutor;
         $output = '';
@@ -119,7 +119,7 @@ class DIPluginTest extends \PHPUnit\Framework\TestCase
 
     private function jsonFile(array $config): string
     {
-        $selfPath = \dirname(__DIR__, 3);
+        $selfPath = dirname(__DIR__, 3);
 
         $jsonFile = self::target($this->dataDescription(), 'composer.json');
         /** @noinspection PhpUnhandledExceptionInspection */

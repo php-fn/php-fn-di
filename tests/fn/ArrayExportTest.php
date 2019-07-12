@@ -6,11 +6,12 @@
 namespace fn;
 
 use fn\test\assert;
+use PHPUnit\Framework\TestCase;
 
 /**
  * @covers ArrayExport
  */
-class ArrayExportTest extends \PHPUnit\Framework\TestCase
+class ArrayExportTest extends TestCase
 {
     /**
      * @return array

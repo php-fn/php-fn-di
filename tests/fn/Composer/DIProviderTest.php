@@ -7,10 +7,11 @@ namespace fn\Composer;
 
 use fn;
 use fn\test\assert;
+use PHPUnit\Framework\TestCase;
 
 /**
  */
-class DIProviderTest extends \PHPUnit\Framework\TestCase
+class DIProviderTest extends TestCase
 {
     /**
      * @return array[]

@@ -12,8 +12,9 @@ use DI\Proxy\ProxyFactory;
 use function fn\di;
 use fn\test\assert;
 use fn\DI\ContainerConfigurationFactory as F;
+use PHPUnit\Framework\TestCase;
 
-class ContainerConfigurationFactoryTest extends \PHPUnit\Framework\TestCase
+class ContainerConfigurationFactoryTest extends TestCase
 {
     /**
      * @Inject("foo")

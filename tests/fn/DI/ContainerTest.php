@@ -7,8 +7,9 @@ namespace fn\DI;
 
 use fn\test\assert;
 use DI;
+use PHPUnit\Framework\TestCase;
 
-class ContainerTest extends \PHPUnit\Framework\TestCase
+class ContainerTest extends TestCase
 {
     /**
      * @covers Container::addDefinition
