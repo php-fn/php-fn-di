@@ -5,15 +5,14 @@
 
 namespace fn
 {
-
     use DI\CompiledContainer;
     use DI\Definition\Source\DefinitionSource;
     use Psr\Container\ContainerInterface;
 
     /**
      * Create a container from the given definitions.
-     * If the last parameter is a callable  it will be invoked to get the container configuration.
-     * If the last parameter is TRUE the container will be configured will be auto(by reflections) wired.
+     * If the last parameter is a callable it will be invoked to get the container configuration.
+     * If the last parameter is TRUE the container will be auto(by reflections) wired.
      *
      * @param string|array|DefinitionSource|callable|true ...$args
      * @return DI\Container|CompiledContainer
@@ -22,7 +21,7 @@ namespace fn
     {
         $last = array_pop($args);
 
-        if (isCallable($last, true)) {
+        if (isCallable($last)) {
             $config = $last();
             $config = is_array($config) ? $config : [DI\WIRING => $config];
         } else if ($last === DI\WIRING\AUTO) {

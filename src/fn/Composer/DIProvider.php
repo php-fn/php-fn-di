@@ -47,7 +47,7 @@ class DIProvider implements IteratorAggregate
             $this->di[$class = self::getClass($class)] = new DIRenderer(
                 $class,
                 $config['config'],
-                array_map(function($container) {
+                array_map(static function ($container) {
                     return self::getClass($container);
                 }, $config['containers']),
                 $config['files'],
@@ -89,14 +89,14 @@ class DIProvider implements IteratorAggregate
         foreach ($it as $key => $value) {
             $depth = $it->getDepth();
             $parents[$depth] = $key;
-            $parents = \array_slice($parents, 0, $depth + 2, true);
+            $parents = array_slice($parents, 0, $depth + 2, true);
             $parent = $parents[$depth - 1];
 
             if (static::getClass($key)) {
 
                 $configs[$key] = $configs[$key] ?? [
                     'config' => $this->config($key),
-                    'files' => \is_string($value) ? [$value] : [],
+                    'files' => is_string($value) ? [$value] : [],
                     'containers' => [],
                     'values' => [],
                     'root' => false,
@@ -107,7 +107,7 @@ class DIProvider implements IteratorAggregate
                 }
 
             } else if (isset($configs[$parent])) {
-                if (\is_numeric($key)) {
+                if (is_numeric($key)) {
                     $configs[$parent][self::getClass($value) ? 'containers' : 'files'][] = $value;
                 } else {
                     $configs[$parent]['values'][$key] = $value;
@@ -134,6 +134,6 @@ class DIProvider implements IteratorAggregate
      */
     private static function getClass(string $candidate): string
     {
-        return (string) (strpos($candidate, '@') === 0 ? substr($candidate, 1) : '');
+        return (string)(strpos($candidate, '@') === 0 ? substr($candidate, 1) : '');
     }
 }

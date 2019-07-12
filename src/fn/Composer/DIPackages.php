@@ -5,6 +5,7 @@
 
 namespace fn\Composer;
 
+use fn;
 use Composer\Package\RootPackageInterface;
 use Composer\Composer;
 use Composer\Package\CompletePackageInterface;
@@ -159,8 +160,8 @@ class DIPackages
                 $const[] = "            'description' => " . var_export($package['description'], true) . ',';
                 $const[] = "            'homepage'    => " . var_export($package['homepage'], true) . ',';
                 $const[] = "            'dir'         => $dir,";
-                $const[] = "            'authors'     => " . new \fn\ArrayExport((array)$package['authors']) . ',';
-                $const[] = "            'extra'       => " . new \fn\ArrayExport($package['extra']) . ',';
+                $const[] = "            'authors'     => " . new fn\ArrayExport((array)$package['authors']) . ',';
+                $const[] = "            'extra'       => " . new fn\ArrayExport($package['extra']) . ',';
                 $const[] = '        ],';
                 $const[] = '';
             }

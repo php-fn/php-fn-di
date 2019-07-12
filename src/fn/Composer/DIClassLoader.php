@@ -8,6 +8,7 @@
 namespace fn\Composer;
 
 use Composer\Autoload;
+use fn;
 
 /**
  */
@@ -17,8 +18,9 @@ class DIClassLoader extends Autoload\ClassLoader
      * @var Autoload\ClassLoader
      */
     private $classLoader;
+
     /**
-     * @var \fn\DI\Container
+     * @var fn\DI\Container
      */
     private $container;
 
@@ -45,7 +47,7 @@ class DIClassLoader extends Autoload\ClassLoader
     }
 
     /**
-     * @return DI|\fn\DI\Container
+     * @return DI|fn\DI\Container
      */
     public function getContainer(): DI
     {
@@ -68,7 +70,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function getPrefixes()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -76,7 +78,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function getPrefixesPsr4()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -84,7 +86,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function getFallbackDirs()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -92,7 +94,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function getFallbackDirsPsr4()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -100,7 +102,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function getClassMap()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -108,7 +110,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function addClassMap(array $classMap)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -116,7 +118,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function add($prefix, $paths, $prepend = false)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -124,7 +126,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function addPsr4($prefix, $paths, $prepend = false)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -132,7 +134,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function set($prefix, $paths)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -140,7 +142,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function setPsr4($prefix, $paths)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -148,7 +150,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function setUseIncludePath($useIncludePath)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -156,7 +158,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function getUseIncludePath()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -164,7 +166,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function setClassMapAuthoritative($classMapAuthoritative)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -172,7 +174,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function isClassMapAuthoritative()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -180,7 +182,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function setApcuPrefix($apcuPrefix)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -188,7 +190,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function getApcuPrefix()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -196,7 +198,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function register($prepend = false)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -204,7 +206,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function unregister()
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -212,7 +214,7 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function loadClass($class)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 
     /**
@@ -220,6 +222,6 @@ class DIClassLoader extends Autoload\ClassLoader
      */
     public function findFile($class)
     {
-        return \call_user_func_array([$this->classLoader, __FUNCTION__], \func_get_args());
+        return call_user_func_array([$this->classLoader, __FUNCTION__], func_get_args());
     }
 }

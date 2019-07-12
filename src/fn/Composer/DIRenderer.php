@@ -53,11 +53,11 @@ class DIRenderer
         $this->class = $class;
         $this->config = new ArrayExport($config);
 
-        $this->containers = implode('', \array_map(function(string $container): string {
+        $this->containers = implode('', array_map(static function (string $container): string {
             return "\n                    \\{$container}::class => new \\{$container},";
         }, $containers));
 
-        $this->files = implode('', \array_map(function(string $file): string {
+        $this->files = implode('', array_map(static function (string $file): string {
             return "\n                    \\fn\\BASE_DIR . '$file',";
         }, $files));
 
@@ -66,12 +66,12 @@ class DIRenderer
 
     public function getNameSpace(): string
     {
-        return \substr($this->class, 0, -(\strlen($this->getClassName()) + 1));
+        return substr($this->class, 0, -(strlen($this->getClassName()) + 1));
     }
 
     public function getClassName(): string
     {
-        $parts = \explode('\\', $this->class);
+        $parts = explode('\\', $this->class);
 
         return (string)end($parts);
     }

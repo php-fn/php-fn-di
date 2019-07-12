@@ -13,7 +13,7 @@
   },
   "require-dev": {
     "docker-xampp/bin": "^1",
-    "php-fn/test": "^1",
+    "php-fn/test": "2.x-dev",
     "doctrine/annotations": "^1",
     "composer/composer": "^1",
 
