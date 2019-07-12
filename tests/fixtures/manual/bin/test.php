@@ -1,17 +1,17 @@
 #!/usr/bin/env php
 <?php
 
-echo \call_user_func(require '/tmp/vendor-di-test-manual/autoload.php', function(
+echo call_user_func(require '/tmp/vendor-di-test-manual/autoload.php', static function(
     Psr\Container\ContainerInterface $c,
-    \fn\c1 $c1,
-    \fn\c2 $c2
+//    \fn\c1 $c1,
+    fn\c2 $c2
 ) {
     return json_encode([
         '$c->get(\'foo\')' => $c->get('foo'),
-        '$c->get(\'bar\')' => $c->get('bar'),
+//        '$c->get(\'bar\')' => $c->get('bar'),
         '$c->get(\'c3\')' => $c->get('c3'),
         '$c->get(\'c31\')' => $c->get('c31'),
-        '$c1->get(\'bar\')' => $c1->get('bar'),
+//        '$c1->get(\'bar\')' => $c1->get('bar'),
         '$c2->has(\'bar\')' => $c2->has('bar'),
         '$c2->get(\'c3\')' => $c2->get('c3'),
         '$c2->get(\'c31\')' => $c2->get('c31'),
