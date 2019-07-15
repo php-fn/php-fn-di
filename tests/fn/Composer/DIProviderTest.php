@@ -84,6 +84,7 @@ class DIProviderTest extends TestCase
 
     /**
      * @dataProvider providerGetIterator
+     * @covers \fn\Composer\DIProvider::getIterator
      *
      * @param array $expected
      * @param array $di

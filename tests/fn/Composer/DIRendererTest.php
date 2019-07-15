@@ -28,8 +28,8 @@ class DIRendererTest extends TestCase
     }
 
     /**
-     * @covers       DIRenderer::getNameSpace
-     * @covers       DIRenderer::getClassName
+     * @covers \fn\Composer\DIRenderer::getNameSpace
+     * @covers \fn\Composer\DIRenderer::getClassName
      *
      * @dataProvider providerClass
      *
@@ -135,7 +135,7 @@ EOF
     }
 
     /**
-     * @covers DIRenderer::__toString
+     * @covers \fn\Composer\DIRenderer::__toString
      *
      * @dataProvider providerToString
      *

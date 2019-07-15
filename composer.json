@@ -13,7 +13,8 @@
   },
   "require-dev": {
     "docker-xampp/bin": "^1",
-    "php-fn/test": "2.x-dev",
+    "php-coveralls/php-coveralls": "^2.1",
+    "php-fn/test": "^2.0",
     "doctrine/annotations": "^1",
     "composer/composer": "^1",
 
@@ -39,5 +40,8 @@
       "dev-master": "2.x-dev"
     },
     "class": "fn\\Composer\\DIPlugin"
+  },
+  "scripts": {
+    "test": "php -d error_reporting=22527 vendor/bin/phpunit tests/"
   }
 }

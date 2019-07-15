@@ -10,7 +10,6 @@ use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
 /**
- * @group dev
  * @coversDefaultClass Package
  */
 class PackageTest extends TestCase
@@ -38,6 +37,20 @@ class PackageTest extends TestCase
         $prop->setValue(null);
     }
 
+    /**
+     * @covers \fn\Package::get
+     * @covers \fn\Package::resolveName
+     * @covers \fn\Package::resolveVersion
+     * @covers \fn\Package::resolveHomepage
+     * @covers \fn\Package::resolveDescription
+     * @covers \fn\Package::resolveDir
+     * @covers \fn\Package::resolveAuthors
+     * @covers \fn\Package::resolveExtra
+     * @covers \fn\Package::resolveRoot
+     * @covers \fn\Package::file
+     * @covers \fn\Package::files
+     * @covers \fn\Package::version
+     */
     public function testNullObject(): void
     {
         assert\type(Package::class, Package::get('foo'));
@@ -61,6 +74,20 @@ class PackageTest extends TestCase
         assert\same(null, $package->version(true));
     }
 
+    /**
+     * @covers \fn\Package::get
+     * @covers \fn\Package::resolveName
+     * @covers \fn\Package::resolveVersion
+     * @covers \fn\Package::resolveHomepage
+     * @covers \fn\Package::resolveDescription
+     * @covers \fn\Package::resolveDir
+     * @covers \fn\Package::resolveAuthors
+     * @covers \fn\Package::resolveExtra
+     * @covers \fn\Package::resolveRoot
+     * @covers \fn\Package::file
+     * @covers \fn\Package::files
+     * @covers \fn\Package::version
+     */
     public function testDefined(): void
     {
         defined('fn\\PACKAGES') || define('fn\\PACKAGES', self::PACKAGES);
@@ -84,6 +111,9 @@ class PackageTest extends TestCase
         assert\same('1.2.3.0', $package->version(true));
     }
 
+    /**
+     * @covers \fn\Package::version
+     */
     public function testVersion(): void
     {
         assert\same('1.2.3.4', (new Package(['version' => '1.2.3.4']))->version());

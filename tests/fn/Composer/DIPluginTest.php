@@ -11,6 +11,7 @@ use Composer;
 use PHPUnit\Framework\TestCase;
 
 /**
+ * @coversDefaultClass DIPlugin
  */
 class DIPluginTest extends TestCase
 {
@@ -93,9 +94,8 @@ class DIPluginTest extends TestCase
     /**
      * @group heavy
      *
+     * @covers \fn\Composer\DIPlugin::onAutoloadDump
      * @dataProvider providerOnAutoloadDump
-     *
-     * @covers       DIPlugin::onAutoloadDump
      *
      * @param mixed $expected
      * @param array $config

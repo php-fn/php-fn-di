@@ -14,6 +14,9 @@ use fn\test\assert;
 use fn\DI\ContainerConfigurationFactory as F;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass ContainerConfigurationFactory
+ */
 class ContainerConfigurationFactoryTest extends TestCase
 {
     /**
@@ -22,8 +25,8 @@ class ContainerConfigurationFactoryTest extends TestCase
     private $foo;
 
     /**
-     * @covers ContainerConfigurationFactory::create
-     * @covers ContainerConfigurationFactory::configure
+     * @covers \fn\DI\ContainerConfigurationFactory::create
+     * @covers \fn\DI\ContainerConfigurationFactory::configure
      */
     public function testCreateAndConfigure(): void
     {
@@ -57,6 +60,9 @@ class ContainerConfigurationFactoryTest extends TestCase
         $this->assertWiring('bar', WIRING\TOLERANT);
     }
 
+    /**
+     * @uses \fn\di
+     */
     public function testFunctionDi(): void
     {
         assert\type(Container::class, di());

@@ -9,12 +9,15 @@ use fn\test\assert;
 use DI;
 use PHPUnit\Framework\TestCase;
 
+/**
+ * @coversDefaultClass Container
+ */
 class ContainerTest extends TestCase
 {
     /**
-     * @covers Container::addDefinition
-     * @covers Container::getDefinition
-     * @covers Container::getDefinitions
+     * @covers \fn\DI\Container::addDefinition
+     * @covers \fn\DI\Container::getDefinition
+     * @covers \fn\DI\Container::getDefinitions
      */
     public function testDefinitionSource(): void
     {

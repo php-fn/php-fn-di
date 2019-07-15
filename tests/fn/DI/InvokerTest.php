@@ -19,7 +19,7 @@ use ReflectionMethod;
 class InvokerTest extends TestCase
 {
     /**
-     * @covers ::resolve
+     * @covers \fn\DI\Invoker::resolve
      */
     public function testResolve(): void
     {
@@ -35,7 +35,7 @@ class InvokerTest extends TestCase
     }
 
     /**
-     * @covers ::reflect
+     * @covers \fn\DI\Invoker::reflect
      */
     public function testReflect(): void
     {
@@ -45,7 +45,7 @@ class InvokerTest extends TestCase
     }
 
     /**
-     * @covers ::parameters
+     * @covers \fn\DI\Invoker::parameters
      */
     public function testParameters(): void
     {
@@ -65,7 +65,7 @@ class InvokerTest extends TestCase
     }
 
     /**
-     * @covers ::call
+     * @covers \fn\DI\Invoker::call
      */
     public function testCall(): void
     {

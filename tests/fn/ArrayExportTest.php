@@ -9,7 +9,7 @@ use fn\test\assert;
 use PHPUnit\Framework\TestCase;
 
 /**
- * @covers ArrayExport
+ * @coversDefaultClass  ArrayExport
  */
 class ArrayExportTest extends TestCase
 {
@@ -35,7 +35,7 @@ class ArrayExportTest extends TestCase
     }
 
     /**
-     * @covers       ArrayExport::__toString
+     * @covers \fn\ArrayExport::__toString
      *
      * @dataProvider providerToString
      *
