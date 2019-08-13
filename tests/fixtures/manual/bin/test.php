@@ -3,8 +3,8 @@
 
 echo call_user_func(require '/tmp/vendor-di-test-manual/autoload.php', static function(
     Psr\Container\ContainerInterface $c,
-//    \fn\c1 $c1,
-    fn\c2 $c2
+//    \php\c1 $c1,
+    php\c2 $c2
 ) {
     return json_encode([
         '$c->get(\'foo\')' => $c->get('foo'),
@@ -15,6 +15,6 @@ echo call_user_func(require '/tmp/vendor-di-test-manual/autoload.php', static fu
         '$c2->has(\'bar\')' => $c2->has('bar'),
         '$c2->get(\'c3\')' => $c2->get('c3'),
         '$c2->get(\'c31\')' => $c2->get('c31'),
-        '$c2->get(fn\c31::class)->get(\'c31\')' => $c2->get(fn\c31::class)->get('c31'),
+        '$c2->get(php\c31::class)->get(\'c31\')' => $c2->get(php\c31::class)->get('c31'),
     ], JSON_PRETTY_PRINT);
 }) . PHP_EOL;

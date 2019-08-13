@@ -3,9 +3,9 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\DI;
+namespace php\DI;
 
-use fn;
+use php;
 use DI\ContainerBuilder;
 use DI\Definition\Source\DefinitionSource;
 use Psr\Container\ContainerInterface;
@@ -64,7 +64,7 @@ class ContainerConfigurationFactory
         $builder->useAutowiring(false)->useAnnotations(false)->ignorePhpDocErrors(false);
 
         $wiring = $this->config[WIRING] ?? null;
-        if (fn\hasValue($wiring, [WIRING\REFLECTION, WIRING\AUTO])) {
+        if (php\hasValue($wiring, [WIRING\REFLECTION, WIRING\AUTO])) {
             $builder->useAutowiring(true);
         } else if ($wiring === WIRING\STRICT) {
             $builder->useAnnotations(true)->ignorePhpDocErrors(false);

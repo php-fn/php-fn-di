@@ -3,15 +3,15 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\DI;
+namespace php\DI;
 
 use DI\Annotation\Inject;
 use DI\CompiledContainer;
 use DI\Definition\Source\SourceChain;
 use DI\Proxy\ProxyFactory;
-use function fn\di;
-use fn\test\assert;
-use fn\DI\ContainerConfigurationFactory as F;
+use function php\di;
+use php\test\assert;
+use php\DI\ContainerConfigurationFactory as F;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -25,8 +25,8 @@ class ContainerConfigurationFactoryTest extends TestCase
     private $foo;
 
     /**
-     * @covers \fn\DI\ContainerConfigurationFactory::create
-     * @covers \fn\DI\ContainerConfigurationFactory::configure
+     * @covers \php\DI\ContainerConfigurationFactory::create
+     * @covers \php\DI\ContainerConfigurationFactory::configure
      */
     public function testCreateAndConfigure(): void
     {
@@ -61,7 +61,7 @@ class ContainerConfigurationFactoryTest extends TestCase
     }
 
     /**
-     * @uses \fn\di
+     * @uses \php\di
      */
     public function testFunctionDi(): void
     {

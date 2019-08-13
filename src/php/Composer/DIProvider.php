@@ -3,7 +3,7 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\Composer;
+namespace php\Composer;
 
 use ArrayIterator;
 use IteratorAggregate;
@@ -76,7 +76,7 @@ class DIProvider implements IteratorAggregate
             RecursiveIteratorIterator::SELF_FIRST
         );
 
-        $class = '@fn\\Composer\\DI';
+        $class = '@php\\Composer\\DI';
         $configs = [$class => [
             'config' => $this->config($class),
             'files' => [],

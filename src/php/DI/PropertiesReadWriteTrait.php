@@ -3,9 +3,9 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\DI;
+namespace php\DI;
 
-use fn;
+use php;
 use Psr\Container\ContainerInterface;
 
 /**
@@ -23,11 +23,11 @@ trait PropertiesReadWriteTrait
         } else if (property_exists($this, 'container')) {
             $container = $this->container;
         } else {
-            fn\fail("property %s or method % doesn't exist", 'container', 'getContainer');
+            php\fail("property %s or method % doesn't exist", 'container', 'getContainer');
         }
         /** @noinspection PhpUndefinedVariableInspection */
         if (!$container instanceof $type) {
-            fn\fail('container is not of type %s', $type);
+            php\fail('container is not of type %s', $type);
         }
         return $container;
     }

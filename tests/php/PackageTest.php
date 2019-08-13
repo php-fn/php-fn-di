@@ -3,9 +3,9 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn;
+namespace php;
 
-use fn\test\assert;
+use php\test\assert;
 use PHPUnit\Framework\TestCase;
 use ReflectionClass;
 
@@ -32,24 +32,24 @@ class PackageTest extends TestCase
      */
     public function setUp()
     {
-        $prop = (new ReflectionClass(Package::class))->getProperty('packages');
+        $prop = (new ReflectionClass(Package::class))->getProperty('data');
         $prop->setAccessible(true);
         $prop->setValue(null);
     }
 
     /**
-     * @covers \fn\Package::get
-     * @covers \fn\Package::resolveName
-     * @covers \fn\Package::resolveVersion
-     * @covers \fn\Package::resolveHomepage
-     * @covers \fn\Package::resolveDescription
-     * @covers \fn\Package::resolveDir
-     * @covers \fn\Package::resolveAuthors
-     * @covers \fn\Package::resolveExtra
-     * @covers \fn\Package::resolveRoot
-     * @covers \fn\Package::file
-     * @covers \fn\Package::files
-     * @covers \fn\Package::version
+     * @covers \php\Package::get
+     * @covers \php\Package::resolveName
+     * @covers \php\Package::resolveVersion
+     * @covers \php\Package::resolveHomepage
+     * @covers \php\Package::resolveDescription
+     * @covers \php\Package::resolveDir
+     * @covers \php\Package::resolveAuthors
+     * @covers \php\Package::resolveExtra
+     * @covers \php\Package::resolveRoot
+     * @covers \php\Package::file
+     * @covers \php\Package::files
+     * @covers \php\Package::version
      */
     public function testNullObject(): void
     {
@@ -75,22 +75,22 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @covers \fn\Package::get
-     * @covers \fn\Package::resolveName
-     * @covers \fn\Package::resolveVersion
-     * @covers \fn\Package::resolveHomepage
-     * @covers \fn\Package::resolveDescription
-     * @covers \fn\Package::resolveDir
-     * @covers \fn\Package::resolveAuthors
-     * @covers \fn\Package::resolveExtra
-     * @covers \fn\Package::resolveRoot
-     * @covers \fn\Package::file
-     * @covers \fn\Package::files
-     * @covers \fn\Package::version
+     * @covers \php\Package::get
+     * @covers \php\Package::resolveName
+     * @covers \php\Package::resolveVersion
+     * @covers \php\Package::resolveHomepage
+     * @covers \php\Package::resolveDescription
+     * @covers \php\Package::resolveDir
+     * @covers \php\Package::resolveAuthors
+     * @covers \php\Package::resolveExtra
+     * @covers \php\Package::resolveRoot
+     * @covers \php\Package::file
+     * @covers \php\Package::files
+     * @covers \php\Package::version
      */
     public function testDefined(): void
     {
-        defined('fn\\PACKAGES') || define('fn\\PACKAGES', self::PACKAGES);
+        defined('php\\PACKAGES') || define('php\\PACKAGES', self::PACKAGES);
 
         $package = package('foo');
         assert\same('foo', $package->name);
@@ -112,7 +112,7 @@ class PackageTest extends TestCase
     }
 
     /**
-     * @covers \fn\Package::version
+     * @covers \php\Package::version
      */
     public function testVersion(): void
     {

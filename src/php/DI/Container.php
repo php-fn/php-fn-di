@@ -3,7 +3,7 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\DI;
+namespace php\DI;
 
 use DI\Definition\Definition;
 use DI\Definition\Source\DefinitionArray;

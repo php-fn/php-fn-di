@@ -18,10 +18,10 @@
           "composer-plugin-api": "^1.0"
         },
         "autoload": {
-          "psr-4": {"fn\\": ["src/fn"]}
+          "psr-4": {"php\\": ["src/php"]}
         },
         "extra": {
-          "class": "fn\\Composer\\DIPlugin"
+          "class": "php\\Composer\\DIPlugin"
         }
       }
     }
@@ -34,10 +34,10 @@
   },
   "extra": {
     "di": {
-      "@fn\\c2": {
-        "@fn\\c3": {
+      "@php\\c2": {
+        "@php\\c3": {
           "c3": "C3",
-          "@fn\\c31": {"c31": "C31"}
+          "@php\\c31": {"c31": "C31"}
         }
       },
       "foo": "bar"

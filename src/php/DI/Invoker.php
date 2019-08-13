@@ -5,9 +5,9 @@
 
 /** @noinspection PhpDocMissingThrowsInspection */
 
-namespace fn\DI;
+namespace php\DI;
 
-use fn;
+use php;
 
 use Invoker\{InvokerInterface, ParameterResolver, ParameterResolver\GeneratorResolver, Reflection\CallableReflection};
 use Psr\Container\ContainerInterface;
@@ -29,7 +29,7 @@ class Invoker extends ParameterResolver\ResolverChain implements InvokerInterfac
     {
         $this->invoker = new \Invoker\Invoker($this);
 
-        parent::__construct(fn\traverse($resolvers, function($candidate): ParameterResolver\ParameterResolver {
+        parent::__construct(php\traverse($resolvers, function($candidate): ParameterResolver\ParameterResolver {
             if ($candidate instanceof ParameterResolver\ParameterResolver) {
                 return $candidate;
             }
@@ -56,7 +56,7 @@ class Invoker extends ParameterResolver\ResolverChain implements InvokerInterfac
             /** @noinspection PhpUnhandledExceptionInspection */
             return $resolver->resolve($candidate);
         }
-        fn\isCallable($candidate) || fn\fail('argument $candidate is not callable');
+        php\isCallable($candidate) || php\fail('argument $candidate is not callable');
         return $candidate;
     }
 

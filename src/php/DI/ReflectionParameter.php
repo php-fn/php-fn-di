@@ -3,17 +3,17 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\DI;
+namespace php\DI;
 
-use fn;
-use fn\PropertiesTrait;
+use php;
+use php\PropertiesTrait;
 use phpDocumentor\Reflection\DocBlock\Tags\Param;
 use phpDocumentor\Reflection\Type;
 
 /**
  * @property-read Param $tag = null
  * @property-read string $description
- * @property-read Type[]|fn\Map $types
+ * @property-read Type[]|php\Map $types
  */
 class ReflectionParameter extends \ReflectionParameter
 {
@@ -44,11 +44,11 @@ class ReflectionParameter extends \ReflectionParameter
 
     /**
      * @see $types
-     * @return fn\Map
+     * @return php\Map
      */
-    protected function resolveTypes(): fn\Map
+    protected function resolveTypes(): php\Map
     {
         $type = $this->tag ? $this->tag->getType() : [];
-        return fn\map(is_iterable($type) ? $type : [$type]);
+        return php\map(is_iterable($type) ? $type : [$type]);
     }
 }

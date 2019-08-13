@@ -3,10 +3,10 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\Composer;
+namespace php\Composer;
 
-use fn;
-use fn\test\assert;
+use php;
+use php\test\assert;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -28,25 +28,25 @@ class DIProviderTest extends TestCase
                 'expected' => [
                     new DIRenderer(
                         DI::class,
-                        [fn\DI\WIRING => fn\DI\WIRING\REFLECTION,],
+                        [php\DI\WIRING => php\DI\WIRING\REFLECTION,],
                         ['ns\c1', 'ns\c5'],
                         [],
                         ['foo' => 'bar', 'bar' => 'foo', 'baz' => ['foo', 'bar']],
                         true
                     ),
-                    new DIRenderer('ns\c1', ['cache' => true, fn\DI\WIRING => fn\DI\WIRING\REFLECTION,], ['ns\c2', 'ns\c3']),
-                    new DIRenderer('ns\c2', [fn\DI\WIRING => false], [], ['config/c2.php']),
+                    new DIRenderer('ns\c1', ['cache' => true, php\DI\WIRING => php\DI\WIRING\REFLECTION,], ['ns\c2', 'ns\c3']),
+                    new DIRenderer('ns\c2', [php\DI\WIRING => false], [], ['config/c2.php']),
                     new DIRenderer(
                         'ns\c3',
-                        [fn\DI\WIRING => fn\DI\WIRING\REFLECTION,],
+                        [php\DI\WIRING => php\DI\WIRING\REFLECTION,],
                         ['ns\c4'],
                         ['config/c31.php', 'config/c32.php'],
                         ['foo' => 'bar', 'bar' => ['foo' => ['a', 'b']]]
                     ),
-                    new DIRenderer('ns\c4', [fn\DI\WIRING => fn\DI\WIRING\REFLECTION,], [], ['config/c4.php']),
+                    new DIRenderer('ns\c4', [php\DI\WIRING => php\DI\WIRING\REFLECTION,], [], ['config/c4.php']),
                     new DIRenderer(
                         'ns\c5',
-                        ['cast-to-array', fn\DI\WIRING => fn\DI\WIRING\REFLECTION,],
+                        ['cast-to-array', php\DI\WIRING => php\DI\WIRING\REFLECTION,],
                         ['ns\c4'],
                         ['config/c5.php']
                     )
@@ -73,10 +73,10 @@ class DIProviderTest extends TestCase
                     'baz' => ['foo', 'bar'],
                 ],
                 'config' => [
-                    fn\DI\WIRING => fn\DI\WIRING\REFLECTION,
+                    php\DI\WIRING => php\DI\WIRING\REFLECTION,
                     '@ns\c5' => 'cast-to-array',
                     '@ns\c1' => ['cache' => true],
-                    '@ns\c2' => [fn\DI\WIRING => false],
+                    '@ns\c2' => [php\DI\WIRING => false],
                 ]
             ],
         ];
@@ -84,7 +84,7 @@ class DIProviderTest extends TestCase
 
     /**
      * @dataProvider providerGetIterator
-     * @covers \fn\Composer\DIProvider::getIterator
+     * @covers \php\Composer\DIProvider::getIterator
      *
      * @param array $expected
      * @param array $di

@@ -3,9 +3,9 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\Composer;
+namespace php\Composer;
 
-use fn\ArrayExport;
+use php\ArrayExport;
 
 /**
  */
@@ -58,7 +58,7 @@ class DIRenderer
         }, $containers));
 
         $this->files = implode('', array_map(static function (string $file): string {
-            return "\n                    \\fn\\BASE_DIR . '$file',";
+            return "\n                    \\php\\BASE_DIR . '$file',";
         }, $files));
 
         $this->values = new ArrayExport($values);
@@ -85,14 +85,14 @@ class DIRenderer
 namespace {$this->getNameSpace()} {
     /**
      */
-    class {$this->getClassName()} extends \\fn\\DI\\Container
+    class {$this->getClassName()} extends \\php\\DI\\Container
     {
         /**
          * @inheritdoc
          */
         public function __construct()
         {
-            \$cc = \\fn\\DI\\ContainerConfigurationFactory::create(
+            \$cc = \\php\\DI\\ContainerConfigurationFactory::create(
                 {$this->config}, 
                 \$sources = [{$this->containers}
                 ],

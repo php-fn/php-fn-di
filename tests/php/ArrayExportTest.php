@@ -3,9 +3,9 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn;
+namespace php;
 
-use fn\test\assert;
+use php\test\assert;
 use PHPUnit\Framework\TestCase;
 
 /**
@@ -35,7 +35,7 @@ class ArrayExportTest extends TestCase
     }
 
     /**
-     * @covers \fn\ArrayExport::__toString
+     * @covers \php\ArrayExport::__toString
      *
      * @dataProvider providerToString
      *

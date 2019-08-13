@@ -6,7 +6,7 @@
   "homepage": "https://github.com/php-fn/php-fn-di",
   "require": {
     "php": ">=7.1",
-    "php-fn/php-fn": "^2.0",
+    "php-fn/php-fn": "^3.0",
     "php-fn/invoker": "^2.0",
     "php-di/php-di": "^6.0",
     "composer-plugin-api": "^1"
@@ -14,7 +14,7 @@
   "require-dev": {
     "docker-xampp/bin": "^1",
     "php-coveralls/php-coveralls": "^2.1",
-    "php-fn/test": "^2.0",
+    "php-fn/test": "^3.0",
     "doctrine/annotations": "^1",
     "composer/composer": "^1",
     "ext-apcu": "*",
@@ -22,7 +22,7 @@
   },
   "autoload": {
     "psr-4": {
-      "fn\\": ["src/fn"]
+      "php\\": ["src/php"]
     },
     "files": [
       "src/autoload-files.php"
@@ -30,16 +30,16 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "fn\\": ["tests/fn"]
+      "php\\": ["tests/php"]
     }
   },
   "minimum-stability": "dev",
   "prefer-stable": true,
   "extra": {
     "branch-alias": {
-      "dev-master": "2.x-dev"
+      "dev-master": "3.x-dev"
     },
-    "class": "fn\\Composer\\DIPlugin"
+    "class": "php\\Composer\\DIPlugin"
   },
   "scripts": {
     "test": "php -d error_reporting=22527 vendor/bin/phpunit tests/"

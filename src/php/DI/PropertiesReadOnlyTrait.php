@@ -3,9 +3,9 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\DI;
+namespace php\DI;
 
-use fn;
+use php;
 
 trait PropertiesReadOnlyTrait
 {
@@ -16,7 +16,7 @@ trait PropertiesReadOnlyTrait
      */
     public function __set($name, $value): void
     {
-        fn\fail('class %s has read-only access for magic-properties: %s', static::class, $name);
+        php\fail('class %s has read-only access for magic-properties: %s', static::class, $name);
     }
 
     /**
@@ -24,6 +24,6 @@ trait PropertiesReadOnlyTrait
      */
     public function __unset($name): void
     {
-        fn\fail('class %s has read-only access for magic-properties: %s', static::class, $name);
+        php\fail('class %s has read-only access for magic-properties: %s', static::class, $name);
     }
 }

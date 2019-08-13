@@ -3,9 +3,9 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn\DI;
+namespace php\DI;
 
-use fn\test\assert;
+use php\test\assert;
 use DI;
 use PHPUnit\Framework\TestCase;
 
@@ -15,9 +15,9 @@ use PHPUnit\Framework\TestCase;
 class ContainerTest extends TestCase
 {
     /**
-     * @covers \fn\DI\Container::addDefinition
-     * @covers \fn\DI\Container::getDefinition
-     * @covers \fn\DI\Container::getDefinitions
+     * @covers \php\DI\Container::addDefinition
+     * @covers \php\DI\Container::getDefinition
+     * @covers \php\DI\Container::getDefinitions
      */
     public function testDefinitionSource(): void
     {

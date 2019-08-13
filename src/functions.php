@@ -3,7 +3,7 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn
+namespace php
 {
     use DI\CompiledContainer;
     use DI\Definition\Source\DefinitionSource;
@@ -45,10 +45,10 @@ namespace fn
     }
 }
 
-namespace fn\Composer
+namespace php\Composer
 {
     /**
-     * @return DI|\fn\DI\Container
+     * @return DI|\php\DI\Container
      */
     function di(): DI
     {

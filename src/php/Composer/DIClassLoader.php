@@ -5,10 +5,10 @@
 
 /** @noinspection PhpUndefinedClassInspection */
 
-namespace fn\Composer;
+namespace php\Composer;
 
 use Composer\Autoload;
-use fn;
+use php;
 
 /**
  */
@@ -20,7 +20,7 @@ class DIClassLoader extends Autoload\ClassLoader
     private $classLoader;
 
     /**
-     * @var fn\DI\Container
+     * @var php\DI\Container
      */
     private $container;
 
@@ -47,7 +47,7 @@ class DIClassLoader extends Autoload\ClassLoader
     }
 
     /**
-     * @return DI|fn\DI\Container
+     * @return DI|php\DI\Container
      */
     public function getContainer(): DI
     {

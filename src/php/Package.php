@@ -3,7 +3,7 @@
  * Copyright (C) php-fn. See LICENSE file for license details.
  */
 
-namespace fn;
+namespace php;
 
 /**
  * @property-read string $name
@@ -21,7 +21,8 @@ class Package
     use PropertiesTrait\Init;
 
     private static $null;
-    private static $packages;
+    private static $data;
+    private const CONSTANT = 'php\\PACKAGES';
 
     /**
      * @param string $name
@@ -32,8 +33,9 @@ class Package
     public static function get(string $name, bool $assert = false): ?self
     {
         self::$null ?: self::$null = new static([]);
-        self::$packages === null && self::$packages = defined('fn\\PACKAGES') ? constant('fn\\PACKAGES') : [];
-        if ($package = self::$packages[$name] ?? null) {
+        self::$data === null && self::$data = defined(self::CONSTANT) ? constant(self::CONSTANT) : [];
+
+        if ($package = self::$data[$name] ?? null) {
             return new static($package);
         }
         return $assert ? null : self::$null;
