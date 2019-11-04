@@ -111,7 +111,7 @@ class InvokerTest extends TestCase
             php\di($definition),
             static function (\ReflectionParameter $parameter, array $provided) {
                 $map = php\map(array_change_key_case($provided));
-                if (($value = $map->get(strtolower($parameter->getName()), null)) !== null) {
+                if (($value = $map[strtolower($parameter->getName())] ?? null) !== null) {
                     yield $value;
                 }
             },
