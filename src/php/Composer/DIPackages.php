@@ -49,6 +49,7 @@ class DIPackages
         'exit',
         'extends',
         'final',
+        'fn',
         'for',
         'foreach',
         'function',
