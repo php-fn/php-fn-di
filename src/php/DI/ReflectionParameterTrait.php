@@ -28,7 +28,7 @@ trait ReflectionParameterTrait
      */
     public function __toString()
     {
-        return call_user_func([$this->proxy, __FUNCTION__], ...func_get_args());
+        return (string)call_user_func([$this->proxy, __FUNCTION__], ...func_get_args());
     }
 
     /**
