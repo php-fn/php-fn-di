@@ -2,6 +2,7 @@
     "name": "php-fn/di",
     "description": "composer plugin for dependency injection containers",
     "type": "composer-plugin",
+    "abandoned": "php-fn/php-fn",
     "license": "MIT",
     "homepage": "https://github.com/php-fn/php-fn-di",
     "require": {
