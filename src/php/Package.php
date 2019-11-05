@@ -145,6 +145,6 @@ class Package
         if (!is_int($format) && ($version[3] ?? null) === '0') {
             $format = 3;
         }
-        return implode('.', sub($version, 0, $format));
+        return implode('.', array_slice($version, 0, $format));
     }
 }
