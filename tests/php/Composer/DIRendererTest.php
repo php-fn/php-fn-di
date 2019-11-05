@@ -62,7 +62,7 @@ namespace ns1\\ns2 {
          */
         public function __construct()
         {
-            \$cc = \\php\\DI\\ContainerConfigurationFactory::create(
+            \$cc = \\php\\DI::config(
                 ['wiring' => 'reflection', 'cache' => false, 'proxy' => 'proxy.php', 'compile' => '/tmp/'], 
                 \$sources = [
                     \\ns1\\ns2\\ns3\\c2::class => new \\ns1\\ns2\\ns3\\c2,
@@ -115,7 +115,7 @@ namespace  {
          */
         public function __construct()
         {
-            \$cc = \\php\\DI\\ContainerConfigurationFactory::create(
+            \$cc = \\php\\DI::config(
                 [], 
                 \$sources = [
                 ],

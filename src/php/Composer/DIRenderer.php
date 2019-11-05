@@ -92,7 +92,7 @@ namespace {$this->getNameSpace()} {
          */
         public function __construct()
         {
-            \$cc = \\php\\DI\\ContainerConfigurationFactory::create(
+            \$cc = \\php\\DI::config(
                 {$this->config}, 
                 \$sources = [{$this->containers}
                 ],
