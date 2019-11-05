@@ -6,7 +6,9 @@
 namespace php;
 
 use DI\CompiledContainer;
+use DI\ContainerBuilder;
 use DI\Definition\Source\DefinitionSource;
+use php\DI\ContainerConfiguration;
 use Psr\Container\ContainerInterface;
 
 abstract class DI
@@ -37,6 +39,39 @@ abstract class DI
             $last && $args[] = $last;
             $config = [];
         }
-        return DI\ContainerConfigurationFactory::create($config, ...$args)->container();
+        return static::config($config, ...$args)->container();
+    }
+
+    /**
+     * @param array $config
+     * @param string|array|DefinitionSource ...$definitions
+     *
+     * @return ContainerConfiguration
+     */
+    public static function config(array $config, ...$definitions): ContainerConfiguration
+    {
+        $builder = new ContainerBuilder(ContainerConfiguration::class);
+
+        $builder->useAutowiring(false)->useAnnotations(false)->ignorePhpDocErrors(false);
+
+        $wiring = $config[static::WIRING] ?? null;
+        if (in_array($wiring, [DI\WIRING::REFLECTION, DI\WIRING::AUTO], true)) {
+            $builder->useAutowiring(true);
+        } else if ($wiring === DI\WIRING::STRICT) {
+            $builder->useAnnotations(true)->ignorePhpDocErrors(false);
+        } else if ($wiring === DI\WIRING::TOLERANT) {
+            $builder->useAnnotations(true)->ignorePhpDocErrors(true);
+        }
+
+        empty($config[static::CACHE]) || $builder->enableDefinitionCache();
+        empty($config[static::PROXY]) || $builder->writeProxiesToFile(true, $config[static::PROXY]);
+        empty($config[static::COMPILE]) || $builder->enableCompilation($config[static::COMPILE]);
+
+        foreach ($definitions as $definition) {
+            $builder->addDefinitions($definition);
+        }
+
+        $built = $builder->build();
+        return $built instanceof ContainerConfiguration ? $built : new ContainerConfiguration($built);
     }
 }
