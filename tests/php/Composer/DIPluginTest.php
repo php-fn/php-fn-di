@@ -39,7 +39,7 @@ class DIPluginTest extends TestCase
                     'name'  => 'php-fn/extra-string-reflection',
                     'extra' => [
                         'di'        => 'config/di.php',
-                        'di-config' => [php\DI\WIRING => php\DI\WIRING\REFLECTION]
+                        'di-config' => [php\DI::WIRING => php\DI\WIRING::REFLECTION]
                     ]
                 ]
             ],
@@ -80,10 +80,10 @@ class DIPluginTest extends TestCase
                             'baz' => ['foo', 'bar'],
                         ],
                         'di-config' => [
-                            php\DI\WIRING => php\DI\WIRING\REFLECTION,
+                            php\DI::WIRING => php\DI\WIRING::REFLECTION,
                             '@ns\c5' => 'cast-to-array',
                             '@ns\c1' => ['cache' => true],
-                            '@ns\c2' => [php\DI\WIRING => false],
+                            '@ns\c2' => [php\DI::WIRING => false],
                         ],
                     ]
                 ]
@@ -111,7 +111,7 @@ class DIPluginTest extends TestCase
         $executor = new Composer\Util\ProcessExecutor;
         $output = '';
         $executor->execute(__DIR__ . '/../../../vendor/bin/composer install --prefer-dist --no-dev', $output, $cwd);
-        assert\equals("vendor/autoload.php' modified\n", substr($output, -30));
+        assert\equals("vendor/autoload.php' modified\n", substr($output, -30), $output);
         $executor->execute('php -d apc.enable_cli=1 test.php', $output, $cwd);
         assert\equals('', $executor->getErrorOutput());
         assert\equals($expected, $output);
@@ -125,6 +125,7 @@ class DIPluginTest extends TestCase
         /** @noinspection PhpUnhandledExceptionInspection */
         (new Composer\Json\JsonFile($jsonFile))->write($config + [
             'require'      => ['php-fn/di' => '999'],
+            'minimum-stability' => 'dev',
             'config'       => ['cache-dir' => '/dev/null', 'data-dir' => '/dev/null'],
             'repositories' => [[
                 'type' => 'package',

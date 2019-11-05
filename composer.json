@@ -25,10 +25,7 @@
             "php\\": [
                 "src/php"
             ]
-        },
-        "files": [
-            "src/autoload-files.php"
-        ]
+        }
     },
     "autoload-dev": {
         "psr-4": {

@@ -1,7 +1,6 @@
 {
   "name": "php-fn/di-test-manual",
   "license": "MIT",
-  "prefer-stable": true,
   "repositories": [
     {
       "type": "package",

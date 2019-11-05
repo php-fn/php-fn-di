@@ -8,7 +8,6 @@ namespace php\DI;
 use php;
 use DI\ContainerBuilder;
 use DI\Definition\Source\DefinitionSource;
-use Psr\Container\ContainerInterface;
 
 /**
  */
@@ -20,22 +19,11 @@ class ContainerConfigurationFactory
     private $config;
 
     /**
-     * @var ContainerInterface
-     */
-    private $container;
-
-    /**
      * @param array $config
      */
     public function __construct(array $config)
     {
         $this->config = $config;
-    }
-
-    public function useContainer(ContainerInterface $container): self
-    {
-        $this->container = $container;
-        return $this;
     }
 
     /**
@@ -63,19 +51,18 @@ class ContainerConfigurationFactory
 
         $builder->useAutowiring(false)->useAnnotations(false)->ignorePhpDocErrors(false);
 
-        $wiring = $this->config[WIRING] ?? null;
-        if (php\hasValue($wiring, [WIRING\REFLECTION, WIRING\AUTO])) {
+        $wiring = $this->config[php\DI::WIRING] ?? null;
+        if (in_array($wiring, [WIRING::REFLECTION, WIRING::AUTO], true)) {
             $builder->useAutowiring(true);
-        } else if ($wiring === WIRING\STRICT) {
+        } else if ($wiring === WIRING::STRICT) {
             $builder->useAnnotations(true)->ignorePhpDocErrors(false);
-        } else if ($wiring === WIRING\TOLERANT) {
+        } else if ($wiring === WIRING::TOLERANT) {
             $builder->useAnnotations(true)->ignorePhpDocErrors(true);
         }
 
-        empty($this->config[CACHE]) || $builder->enableDefinitionCache();
-        empty($this->config[PROXY]) || $builder->writeProxiesToFile(true, $this->config[PROXY]);
-        empty($this->config[COMPILE]) || $builder->enableCompilation($this->config[COMPILE]);
-        $this->container && $builder->wrapContainer($this->container);
+        empty($this->config[php\DI::CACHE]) || $builder->enableDefinitionCache();
+        empty($this->config[php\DI::PROXY]) || $builder->writeProxiesToFile(true, $this->config[php\DI::PROXY]);
+        empty($this->config[php\DI::COMPILE]) || $builder->enableCompilation($this->config[php\DI::COMPILE]);
 
         foreach ($definitions as $definition) {
             $builder->addDefinitions($definition);

@@ -84,7 +84,7 @@ namespace ns1\\ns2 {
 }
 EOF
 , new DIRenderer('ns1\\ns2\\c1', [
-        DI\WIRING => DI\WIRING\REFLECTION,
+        DI::WIRING => DI\WIRING::REFLECTION,
         'cache'   => false,
         'proxy'   => 'proxy.php',
         'compile' => '/tmp/',

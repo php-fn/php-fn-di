@@ -30,7 +30,7 @@ class InvokerTest extends TestCase
         assert\same($func = static function () {}, (new Invoker)->resolve($func));
         assert\same([$this, __FUNCTION__], (new Invoker)->resolve([$this, __FUNCTION__]));
 
-        $resolver = new Invoker(php\di(['callback' => value($func)]));
+        $resolver = new Invoker(php\DI::create(['callback' => value($func)]));
         assert\same($func, $resolver->resolve('callback'));
     }
 
@@ -108,7 +108,7 @@ class InvokerTest extends TestCase
     private function resolver(array $definition = []): Invoker
     {
         return new Invoker(
-            php\di($definition),
+            php\DI::create($definition),
             static function (\ReflectionParameter $parameter, array $provided) {
                 $map = php\map(array_change_key_case($provided));
                 if (($value = $map[strtolower($parameter->getName())] ?? null) !== null) {

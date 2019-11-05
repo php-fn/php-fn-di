@@ -51,8 +51,7 @@ class DIProvider implements IteratorAggregate
                     return self::getClass($container);
                 }, $config['containers']),
                 $config['files'],
-                $config['values'],
-                $config['root']
+                $config['values']
             );
         }
     }

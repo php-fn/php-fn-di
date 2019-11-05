@@ -13,7 +13,6 @@ use RecursiveIteratorIterator;
  */
 class ArrayExport
 {
-
     /**
      * @var array
      */

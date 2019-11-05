@@ -54,8 +54,8 @@ class PackageTest extends TestCase
     public function testNullObject(): void
     {
         assert\type(Package::class, Package::get('foo'));
-        assert\same(Package::get('foo'), $package = package('bar'));
-        assert\same(null, package('bar', true));
+        assert\same(Package::get('foo'), $package = Package::get('bar'));
+        assert\same(null, Package::get('bar', true));
         assert\same(null, $package->name);
         assert\same(null, $package->version);
         assert\same(null, $package->homepage);
@@ -92,7 +92,7 @@ class PackageTest extends TestCase
     {
         defined('php\\PACKAGES') || define('php\\PACKAGES', self::PACKAGES);
 
-        $package = package('foo');
+        $package = Package::get('foo');
         assert\same('foo', $package->name);
         assert\same('1.2.3.0', $package->version);
         assert\same('foo-h', $package->homepage);
